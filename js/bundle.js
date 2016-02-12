@@ -44,40 +44,29 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CloudBreaker = __webpack_require__(1);
-	var GameClock = __webpack_require__(5);
-	var Scoreboard = __webpack_require__(6);
+	var NewGame = __webpack_require__(1);
 	
 	(function () {
-	  // if (typeof Game === "undefined") {
-	  //   window.Game = {};
-	  // }
+	  if (typeof Game === "undefined") {
+	    window.Game = {};
+	  }
 	
-	  var canvasEl = $(".cloud-breaker");
+	  this.games = [];
 	
-	  var minutesLabel = $("#minutes");
-	  var secondsLabel = $("#seconds");
-	  var scoreLabel = $("#score");
-	
+	  this.screen = $(".wrapper");
 	  // this somewhat works
-	  var scoreboard = new Scoreboard(scoreLabel);
-	  var gameClock = new GameClock(minutesLabel, secondsLabel);
-	
-	  new CloudBreaker(canvasEl, gameClock, scoreboard);
-	
-	  // var NewGame = Game.NewGame = function (canvasEl, minutesLabel,
-	  //                                         secondsLabel, scoreLabel) {
-	  //   var scoreboard = new Scoreboard(scoreLabel);
-	  //   var gameClock = new GameClock(minutesLabel, secondsLabel);
-	  //   new CloudBreaker(canvasEl, gameClock, scoreboard);
-	  // };
+	  // var scoreboard = new Scoreboard(scoreLabel);
+	  // var gameClock = new GameClock(minutesLabel, secondsLabel);
 	  //
-	  //
-	  // $(window).on("keydown", function (e) {
-	  //   if (e.keyCode === 78) {
-	  //     Game.NewGame();
-	  //   }
-	  // });
+	  // new CloudBreaker(canvasEl, gameClock, scoreboard);
+	
+	
+	  $(window).on("keydown", function (e) {
+	    if (e.keyCode === 78) {
+	
+	    new NewGame();
+	    }
+	  }).bind(this);
 	
 	
 	})();
@@ -87,9 +76,33 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Paddle = __webpack_require__(2);
-	var Ball = __webpack_require__(3);
-	var Brick = __webpack_require__(4);
+	var CloudBreaker = __webpack_require__(2);
+	var GameClock = __webpack_require__(6);
+	var Scoreboard = __webpack_require__(7);
+	
+	var newGame = function () {
+	
+	  var canvasEl = $(".cloud-breaker");
+	
+	  var minutesLabel = $("#minutes");
+	  var secondsLabel = $("#seconds");
+	  var scoreLabel = $("#score");
+	
+	  this.scoreboard = new Scoreboard(scoreLabel);
+	  this.gameClock = new GameClock(minutesLabel, secondsLabel);
+	  this.cloudBreaker = new CloudBreaker(canvasEl, this.gameClock, this.scoreboard);
+	};
+	
+	module.exports = newGame;
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Paddle = __webpack_require__(3);
+	var Ball = __webpack_require__(4);
+	var Brick = __webpack_require__(5);
 	
 	var CloudBreaker = function ($el, gameClock, scoreboard) {
 	  this.$canvasEl = $el;
@@ -122,7 +135,8 @@
 	CloudBreaker.KEYS = {
 	  39: "E",
 	  37: "W",
-	  32: "play"
+	  32: "play",
+	  78: "new"
 	};
 	
 	CloudBreaker.STEP_MILLIS = 50;
@@ -134,6 +148,9 @@
 	    this.paddle.moveRight();
 	  } else if (CloudBreaker.KEYS[event.keyCode] === "play") {
 	    this.balls[0].inPlay = true;
+	  } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
+	    this.scoreboard.setToZero();
+	    window.clearInterval(this.intervalId);
 	  } else {
 	    // some other key was pressed; ignore.
 	  }
@@ -152,7 +169,7 @@
 	    this.ctx.fillText("You Win!!", 345, 200);
 	    var finalScore = this.generateFinalScore();
 	    var finalScoreString= "Total Points: " + finalScore;
-	    this.ctx.fillText(finalScoreString, 45, 100);
+	    this.ctx.fillText(finalScoreString, 165, 100);
 	  } else if (this.balls.length === 0) {
 	    // lost game
 	    this.ctx.clearRect(0, 0, 900, 550);
@@ -274,7 +291,7 @@
 
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	var Paddle = function () {
@@ -316,7 +333,7 @@
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	var Ball = function (xCoord, yCoord) {
@@ -447,7 +464,7 @@
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	var Brick = function (Coords) {
@@ -575,7 +592,7 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	var GameClock = function ($minutes, $seconds) {
@@ -633,7 +650,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	var Scoreboard = function ($score) {
@@ -666,7 +683,12 @@
 	};
 	
 	Scoreboard.prototype.setFinalScore = function (points) {
-	  this.score = points;
+	  this.score = points.toString().slice(0, 6);
+	  this.scoreLabel[0].innerHTML = this.score;
+	};
+	
+	Scoreboard.prototype.setToZero = function () {
+	  this.score = 0;
 	  this.scoreLabel[0].innerHTML = this.score;
 	};
 	

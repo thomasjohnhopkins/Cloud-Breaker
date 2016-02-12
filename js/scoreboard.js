@@ -28,7 +28,12 @@ Scoreboard.prototype.run = function () {
 };
 
 Scoreboard.prototype.setFinalScore = function (points) {
-  this.score = points;
+  this.score = points.toString().slice(0, 6);
+  this.scoreLabel[0].innerHTML = this.score;
+};
+
+Scoreboard.prototype.setToZero = function () {
+  this.score = 0;
   this.scoreLabel[0].innerHTML = this.score;
 };
 

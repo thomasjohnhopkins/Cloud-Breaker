@@ -33,7 +33,8 @@ var CloudBreaker = function ($el, gameClock, scoreboard) {
 CloudBreaker.KEYS = {
   39: "E",
   37: "W",
-  32: "play"
+  32: "play",
+  78: "new"
 };
 
 CloudBreaker.STEP_MILLIS = 50;
@@ -45,6 +46,9 @@ CloudBreaker.prototype.handleKeyEvent = function (event) {
     this.paddle.moveRight();
   } else if (CloudBreaker.KEYS[event.keyCode] === "play") {
     this.balls[0].inPlay = true;
+  } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
+    this.scoreboard.setToZero();
+    window.clearInterval(this.intervalId);
   } else {
     // some other key was pressed; ignore.
   }
@@ -63,7 +67,7 @@ CloudBreaker.prototype.step = function () {
     this.ctx.fillText("You Win!!", 345, 200);
     var finalScore = this.generateFinalScore();
     var finalScoreString= "Total Points: " + finalScore;
-    this.ctx.fillText(finalScoreString, 45, 100);
+    this.ctx.fillText(finalScoreString, 165, 100);
   } else if (this.balls.length === 0) {
     // lost game
     this.ctx.clearRect(0, 0, 900, 550);

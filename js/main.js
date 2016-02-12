@@ -1,37 +1,26 @@
-var CloudBreaker = require('./cloud-breaker-game.js');
-var GameClock = require('./game-clock.js');
-var Scoreboard = require('./scoreboard.js');
+var NewGame = require('./new-game.js');
 
 (function () {
-  // if (typeof Game === "undefined") {
-  //   window.Game = {};
-  // }
+  if (typeof Game === "undefined") {
+    window.Game = {};
+  }
 
-  var canvasEl = $(".cloud-breaker");
+  this.games = [];
 
-  var minutesLabel = $("#minutes");
-  var secondsLabel = $("#seconds");
-  var scoreLabel = $("#score");
-
+  this.screen = $(".wrapper");
   // this somewhat works
-  var scoreboard = new Scoreboard(scoreLabel);
-  var gameClock = new GameClock(minutesLabel, secondsLabel);
-
-  new CloudBreaker(canvasEl, gameClock, scoreboard);
-
-  // var NewGame = Game.NewGame = function (canvasEl, minutesLabel,
-  //                                         secondsLabel, scoreLabel) {
-  //   var scoreboard = new Scoreboard(scoreLabel);
-  //   var gameClock = new GameClock(minutesLabel, secondsLabel);
-  //   new CloudBreaker(canvasEl, gameClock, scoreboard);
-  // };
+  // var scoreboard = new Scoreboard(scoreLabel);
+  // var gameClock = new GameClock(minutesLabel, secondsLabel);
   //
-  //
-  // $(window).on("keydown", function (e) {
-  //   if (e.keyCode === 78) {
-  //     Game.NewGame();
-  //   }
-  // });
+  // new CloudBreaker(canvasEl, gameClock, scoreboard);
+
+
+  $(window).on("keydown", function (e) {
+    if (e.keyCode === 78) {
+
+    new NewGame();
+    }
+  }).bind(this);
 
 
 })();
