@@ -56,15 +56,22 @@ CloudBreaker.prototype.step = function () {
     this.balls.splice(0, 1);
   }
   if (this.bricks.length === 0) {
+    // won game
     this.ctx.clearRect(0, 0, 900, 550);
     this.ctx.font = "48px Montserrat";
     this.ctx.fillStyle = "rgb(255,255,255)";
-    this.ctx.fillText("You Win!!", 350, 200);
+    this.ctx.fillText("You Win!!", 345, 200);
+    var finalScore = this.generateFinalScore();
+    var finalScoreString= "Total Points: " + finalScore;
+    this.ctx.fillText(finalScoreString, 45, 100);
   } else if (this.balls.length === 0) {
+    // lost game
     this.ctx.clearRect(0, 0, 900, 550);
     this.ctx.font = "48px Montserrat";
     this.ctx.fillStyle = "rgb(255,255,255)";
-    this.ctx.fillText("You Lose!!", 350, 200);
+    var loseMessage = "You Lose!!";
+    this.ctx.fillText(loseMessage, 345, 200);
+
   } else {
     var balls = this.balls;
     var that = this;
@@ -88,13 +95,13 @@ CloudBreaker.prototype.step = function () {
     if (this.bricks.length > 0) {
       for (var j = 0; j < this.bricks.length; j++) {
         var currentBrick = this.bricks[j];
-        if (this.lastHitBrick === currentBrick) {
-          continue;
-        }
+        // if (this.lastHitBrick === currentBrick) {
+        //   continue;
+        // }
         var toRemove;
         toRemove = currentBrick.checkCollision(this.balls[0]);
         if (toRemove) {
-          this.lastHitBrick = currentBrick;
+          // this.lastHitBrick = currentBrick;
           this.scoreboard.addPoints(toRemove);
         }
         if (toRemove === 30) {
@@ -104,13 +111,6 @@ CloudBreaker.prototype.step = function () {
 
     }
   }
-
-
-  // Eventual logic for if ball no longer in play
-  // } else {
-  //   alert("You lose!");
-  //   window.clearInterval(this.intervalId);
-  // }
 };
 
 CloudBreaker.prototype.removeBrick = function (brick) {
@@ -168,6 +168,13 @@ CloudBreaker.prototype.buildBricks = function (brickCoords) {
     currentBrick = new Brick(brickCoords[i]);
     this.bricks.push(currentBrick);
   }
+};
+CloudBreaker.prototype.generateFinalScore = function () {
+  var totalSeconds = Math.floor(this.gameClock.totalMilliseconds / 1000);
+  var finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
+  var roundedScore = Math.floor(finalScore);
+  this.scoreboard.setFinalScore(finalScore);
+  return finalScore.toString().slice(0, 6);
 };
 
 CloudBreaker.prototype.play = function () {

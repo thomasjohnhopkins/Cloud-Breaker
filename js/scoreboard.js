@@ -1,7 +1,6 @@
 var Scoreboard = function ($score) {
         // this.clock = $el;
 
-
         this.score = 0;
         this.scoreLabel = $score;
 
@@ -26,6 +25,11 @@ Scoreboard.prototype.pad = function (val) {
 
 Scoreboard.prototype.run = function () {
   this.setTime();
+};
+
+Scoreboard.prototype.setFinalScore = function (points) {
+  this.score = points;
+  this.scoreLabel[0].innerHTML = this.score;
 };
 
 module.exports = Scoreboard;
