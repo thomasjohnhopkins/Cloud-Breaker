@@ -1,0 +1,69 @@
+html, body, h1, canvas {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  text-align: inherit;
+}
+
+body {
+  background: #6696D4;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.wrapper {
+  min-width: 1000px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+}
+
+canvas {
+  padding: 0;
+  margin: auto;
+  float: left;
+  display: block;
+  background: url('../images/zion.JPG');
+  background-size: cover;
+}
+
+div.game-info {
+  width: 120px;
+  float: left;
+  font-size: 18px;
+}
+
+p.game-stats {
+  margin-top: 70px;
+  margin-left: 30px;
+}
+
+#minutes {
+  margin-left: 30px;
+}
+
+#score {
+  width: 110px;
+  text-align: center;
+}
+
+.instructions {
+  display: block;
+  width: 900px;
+  margin-left: 100px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 19px;
+  color: white;
+}
+
+.group:after {
+  content: "";
+  clear: both;
+  display: block;
+}
