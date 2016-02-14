@@ -21,7 +21,14 @@ var NewGame = require('./new-game.js');
 
   $(window).on("keydown", function (e) {
     if (e.keyCode === 78) {
-    this.ctx.clearRect(0, 0, 900, 550);
+    // this.ctx.clearRect(0, 0, 900, 550);
+
+    var $canvasEl = $(".cloud-breaker");
+    var canvasClone = $canvasEl.clone(true);
+    $canvasEl.replaceWith(canvasClone);
+
+
+
     new NewGame();
     }
   }).bind(this);

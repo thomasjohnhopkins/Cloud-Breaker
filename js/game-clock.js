@@ -4,7 +4,7 @@ var GameClock = function ($minutes, $seconds) {
 
         this.minutesLabel = $minutes;
         this.secondsLabel = $seconds;
-        this.totalMilliseconds = 0;
+        this.totalSeconds = 0;
 
         // function setTime() {
         //     ++this.totalSeconds;
@@ -27,10 +27,10 @@ var GameClock = function ($minutes, $seconds) {
 };
 
 GameClock.prototype.setTime = function () {
-  this.totalMilliseconds = this.totalMilliseconds + 50;
-  var totalSeconds = Math.floor(this.totalMilliseconds / 1000);
-  this.secondsLabel[0].innerHTML = this.pad(totalSeconds%60);
-  this.minutesLabel[0].innerHTML = this.pad(parseInt(totalSeconds/60));
+  this.totalSeconds = this.totalSeconds + 1;
+  var totalSeconds = Math.floor(this.totalSeconds);
+  this.secondsLabel[0].innerHTML = this.pad(totalSeconds % 60);
+  this.minutesLabel[0].innerHTML = this.pad(parseInt(totalSeconds / 60));
 };
 
 GameClock.prototype.pad = function (val) {
@@ -47,6 +47,14 @@ GameClock.prototype.pad = function (val) {
 
 GameClock.prototype.run = function () {
   this.setTime();
+};
+
+GameClock.prototype.setToZero = function () {
+  debugger
+  this.totalSeconds = 0;
+
+  this.secondsLabel[0].innerHTML = this.pad(totalSeconds % 60);
+  this.minutesLabel[0].innerHTML = this.pad(parseInt(totalSeconds / 60));
 };
 
 module.exports = GameClock;

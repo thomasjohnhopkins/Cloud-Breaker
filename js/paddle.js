@@ -5,7 +5,7 @@ var Paddle = function () {
   };
 
   this.movement = {
-    speed: 40
+    speed: 50
   };
 
   this.size = {

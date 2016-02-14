@@ -17,14 +17,14 @@ var CloudBreaker = function ($el, gameClock, scoreboard) {
 
   this.setupGame();
 
-  this.intervalId = window.setInterval(
-    this.step.bind(this),
-    CloudBreaker.STEP_MILLIS
-  );
+  // this.intervalId = window.setInterval(
+  //   this.step.bind(this),
+  //   CloudBreaker.STEP_MILLIS
+  // );
 
-  this.intervalTimer = window.setInterval(
-    this.gameClock.run(),
-    1000
+  var that = this;
+  this.intervalId = window.requestAnimationFrame(
+    that.step.bind(that)
   );
 
   $(window).on("keydown", this.handleKeyEvent.bind(this));
@@ -39,6 +39,13 @@ CloudBreaker.KEYS = {
 
 CloudBreaker.STEP_MILLIS = 50;
 
+CloudBreaker.prototype.tick = function () {
+  debugger
+  if (this.balls[0].inPlay) {
+    this.gameClock.run();
+  }
+};
+
 CloudBreaker.prototype.handleKeyEvent = function (event) {
   if (CloudBreaker.KEYS[event.keyCode] === "W") {
     this.paddle.moveLeft();
@@ -48,7 +55,7 @@ CloudBreaker.prototype.handleKeyEvent = function (event) {
     this.balls[0].inPlay = true;
   } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
     this.scoreboard.setToZero();
-    window.clearInterval(this.intervalId);
+    this.gameClock.setToZero();
   } else {
     // some other key was pressed; ignore.
   }
@@ -70,6 +77,8 @@ CloudBreaker.prototype.step = function () {
     this.ctx.fillText(finalScoreString, 165, 100);
   } else if (this.balls.length === 0) {
     // lost game
+    clearInterval(this.intervalTimer);
+    window.cancelAnimationFrame(this.intervalId);
     this.ctx.clearRect(0, 0, 900, 550);
     this.ctx.font = "48px Montserrat";
     this.ctx.fillStyle = "rgb(255,255,255)";
@@ -87,7 +96,6 @@ CloudBreaker.prototype.step = function () {
     this.paddle.draw(this.ctx);
     if (this.balls[0].inPlay) {
       this.balls[0].move(this.ctx);
-      this.gameClock.run();
     }
 
     this.bricks.forEach( function (brick) {
@@ -115,6 +123,9 @@ CloudBreaker.prototype.step = function () {
 
     }
   }
+  this.intervalId = window.requestAnimationFrame(
+    this.step.bind(this)
+  );
 };
 
 CloudBreaker.prototype.removeBrick = function (brick) {
@@ -164,6 +175,11 @@ CloudBreaker.prototype.setupGame = function () {
   this.buildBricks(firstCloud);
   this.buildBricks(secondCloud);
   this.buildBricks(thirdCloud);
+  var that = this;
+  this.intervalTimer = window.setInterval(
+    that.tick.bind(that),
+    1000
+  );
 };
 
 CloudBreaker.prototype.buildBricks = function (brickCoords) {
