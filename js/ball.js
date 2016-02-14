@@ -1,5 +1,4 @@
 var Ball = function (xCoord, yCoord) {
-
   this.inPlay = false;
 
   this.position = {

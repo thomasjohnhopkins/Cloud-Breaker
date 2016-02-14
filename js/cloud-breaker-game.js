@@ -22,11 +22,6 @@ var CloudBreaker = function ($el, gameClock, scoreboard) {
   //   CloudBreaker.STEP_MILLIS
   // );
 
-  var that = this;
-  this.intervalId = window.requestAnimationFrame(
-    that.step.bind(that)
-  );
-
   $(window).on("keydown", this.handleKeyEvent.bind(this));
 };
 
@@ -39,8 +34,15 @@ CloudBreaker.KEYS = {
 
 CloudBreaker.STEP_MILLIS = 50;
 
+CloudBreaker.prototype.start = function () {
+  var that = this;
+  this.intervalId = window.requestAnimationFrame(
+    that.step.bind(that)
+  );
+};
+
+
 CloudBreaker.prototype.tick = function () {
-  debugger
   if (this.balls[0].inPlay) {
     this.gameClock.run();
   }
@@ -75,6 +77,8 @@ CloudBreaker.prototype.step = function () {
     var finalScore = this.generateFinalScore();
     var finalScoreString= "Total Points: " + finalScore;
     this.ctx.fillText(finalScoreString, 165, 100);
+    clearInterval(this.intervalTimer);
+    window.cancelAnimationFrame(this.intervalId);
   } else if (this.balls.length === 0) {
     // lost game
     clearInterval(this.intervalTimer);
@@ -83,7 +87,7 @@ CloudBreaker.prototype.step = function () {
     this.ctx.font = "48px Montserrat";
     this.ctx.fillStyle = "rgb(255,255,255)";
     var loseMessage = "You Lose!!";
-    this.ctx.fillText(loseMessage, 345, 200);
+    this.ctx.fillText(loseMessage, 340, 200);
 
   } else {
     var balls = this.balls;
@@ -169,6 +173,7 @@ CloudBreaker.prototype.endBrickCoordinates = function (xPos, yPos) {
 
 
 CloudBreaker.prototype.setupGame = function () {
+  this.ctx.clearRect(0, 0, 900, 550);
   firstCloud = this.endBrickCoordinates(150, 80);
   secondCloud = this.middleBrickCoordinates(410, 35);
   thirdCloud = this.endBrickCoordinates(600, 80);
@@ -190,7 +195,7 @@ CloudBreaker.prototype.buildBricks = function (brickCoords) {
   }
 };
 CloudBreaker.prototype.generateFinalScore = function () {
-  var totalSeconds = Math.floor(this.gameClock.totalMilliseconds / 1000);
+  var totalSeconds = Math.floor(this.gameClock.totalSeconds);
   var finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
   var roundedScore = Math.floor(finalScore);
   this.scoreboard.setFinalScore(finalScore);

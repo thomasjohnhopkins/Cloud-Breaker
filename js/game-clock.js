@@ -50,9 +50,9 @@ GameClock.prototype.run = function () {
 };
 
 GameClock.prototype.setToZero = function () {
-  debugger
   this.totalSeconds = 0;
 
+  var totalSeconds = this.totalSeconds;
   this.secondsLabel[0].innerHTML = this.pad(totalSeconds % 60);
   this.minutesLabel[0].innerHTML = this.pad(parseInt(totalSeconds / 60));
 };

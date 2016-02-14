@@ -23,13 +23,8 @@ var NewGame = require('./new-game.js');
     if (e.keyCode === 78) {
     // this.ctx.clearRect(0, 0, 900, 550);
 
-    var $canvasEl = $(".cloud-breaker");
-    var canvasClone = $canvasEl.clone(true);
-    $canvasEl.replaceWith(canvasClone);
-
-
-
-    new NewGame();
+    var $currentCanvasEl = $(".cloud-breaker");
+    new NewGame($currentCanvasEl);
     }
   }).bind(this);
 

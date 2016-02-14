@@ -21,6 +21,7 @@ h1 {
   text-align: center;
   margin-top: 20px;
   font-size: 24px;
+  margin-bottom: 5px;
 }
 
 canvas {
@@ -41,6 +42,18 @@ div.game-info {
 p.game-stats {
   margin-top: 70px;
   margin-left: 30px;
+}
+
+p.game-instrucitons {
+  margin-top: 40px;
+  text-align: center;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 16px;
+}
+
+p.first {
+  margin-top: 100px;
 }
 
 #minutes {
