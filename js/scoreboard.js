@@ -33,8 +33,7 @@ Scoreboard.prototype.setFinalScore = function (points) {
 };
 
 Scoreboard.prototype.setToZero = function () {
-  this.score = 0;
-  this.scoreLabel[0].innerHTML = this.score;
+  this.scoreLabel[0].innerHTML = 0;
 };
 
 module.exports = Scoreboard;

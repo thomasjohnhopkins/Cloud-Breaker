@@ -14,13 +14,14 @@ body {
 
 .wrapper {
   min-width: 1000px;
-  margin: 0 auto;
 }
 
 h1 {
   text-align: center;
+  width: 900px;
   margin-top: 20px;
   font-size: 24px;
+  margin-left: 125px;
   margin-bottom: 5px;
 }
 
@@ -39,13 +40,24 @@ div.game-info {
   font-size: 18px;
 }
 
+div.score-box, div.time-box {
+  margin-left: 10px;
+  height: 105px;
+  width: 100px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+
 p.game-stats {
-  margin-top: 70px;
-  margin-left: 30px;
+  width: 100px;
+  margin: 20px 0;
+  text-align: center;
 }
 
 p.game-instrucitons {
-  margin-top: 40px;
+  margin-top: 30px;
   text-align: center;
   margin-right: 5px;
   margin-left: 5px;
@@ -53,15 +65,15 @@ p.game-instrucitons {
 }
 
 p.first {
-  margin-top: 100px;
+  margin-top: 70px;
 }
 
 #minutes {
-  margin-left: 30px;
+  margin-left: 23px;
 }
 
 #score {
-  width: 110px;
+  margin: 0 auto;
   text-align: center;
 }
 

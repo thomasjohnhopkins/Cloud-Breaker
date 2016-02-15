@@ -4,8 +4,9 @@ var Scoreboard = require('./scoreboard.js');
 
 var newGame = function ($canvasEl) {
 
-  var $canvasClone = $canvasEl.clone(true);
-  $canvasEl.replaceWith($canvasClone);
+  // var $canvasClone = $canvasEl.clone(true);
+  // $canvasEl.replaceWith($canvasClone);
+
 
   var minutesLabel = $("#minutes");
   var secondsLabel = $("#seconds");
@@ -13,7 +14,7 @@ var newGame = function ($canvasEl) {
 
   this.scoreboard = new Scoreboard(scoreLabel);
   this.gameClock = new GameClock(minutesLabel, secondsLabel);
-  this.cloudBreaker = new CloudBreaker($canvasClone, this.gameClock, this.scoreboard);
+  this.cloudBreaker = new CloudBreaker($canvasEl, this.gameClock, this.scoreboard);
   this.cloudBreaker.start();
 };
 

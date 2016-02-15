@@ -18,7 +18,7 @@ var Ball = function (xCoord, yCoord) {
 
 
   this.movement = {
-    speed: 5
+    speed: 4
   };
 
   this.size = {

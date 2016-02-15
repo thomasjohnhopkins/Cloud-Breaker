@@ -55,8 +55,8 @@
 	  this.ctx = $canvasEl[0].getContext("2d");
 	  this.ctx.font = "24px Montserrat";
 	  this.ctx.fillStyle = "rgb(255,255,255)";
-	  this.ctx.fillText("Welcome to Cloud Breaker!", 305, 100);
-	  this.ctx.fillText("Press 'N' to start a new game", 300, 150);
+	  this.ctx.fillText("Welcome to Cloud Breaker!", 300, 100);
+	  this.ctx.fillText("Press 'n' key to start a new game", 275, 150);
 	
 	  // this somewhat works
 	  // var scoreboard = new Scoreboard(scoreLabel);
@@ -88,8 +88,9 @@
 	
 	var newGame = function ($canvasEl) {
 	
-	  var $canvasClone = $canvasEl.clone(true);
-	  $canvasEl.replaceWith($canvasClone);
+	  // var $canvasClone = $canvasEl.clone(true);
+	  // $canvasEl.replaceWith($canvasClone);
+	
 	
 	  var minutesLabel = $("#minutes");
 	  var secondsLabel = $("#seconds");
@@ -97,7 +98,7 @@
 	
 	  this.scoreboard = new Scoreboard(scoreLabel);
 	  this.gameClock = new GameClock(minutesLabel, secondsLabel);
-	  this.cloudBreaker = new CloudBreaker($canvasClone, this.gameClock, this.scoreboard);
+	  this.cloudBreaker = new CloudBreaker($canvasEl, this.gameClock, this.scoreboard);
 	  this.cloudBreaker.start();
 	};
 	
@@ -131,8 +132,22 @@
 	  //   this.step.bind(this),
 	  //   CloudBreaker.STEP_MILLIS
 	  // );
-	
-	  $(window).on("keydown", this.handleKeyEvent.bind(this));
+	  var that = this;
+	  $(window).on("keydown", function (e) {
+	    if (CloudBreaker.KEYS[event.keyCode] === "W") {
+	      that.paddle.moveLeft();
+	    } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
+	      that.paddle.moveRight();
+	    } else if (CloudBreaker.KEYS[event.keyCode] === "play") {
+	      debugger
+	      that.balls[0].inPlay = true;
+	    } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
+	      that.scoreboard.setToZero();
+	      that.gameClock.setToZero();
+	    } else {
+	      // some other key was pressed; ignore for now.
+	    }
+	  });
 	};
 	
 	CloudBreaker.KEYS = {
@@ -158,18 +173,19 @@
 	  }
 	};
 	
-	CloudBreaker.prototype.handleKeyEvent = function (event) {
+	CloudBreaker.prototype.handleKeyEvent = function (event, that) {
 	  if (CloudBreaker.KEYS[event.keyCode] === "W") {
 	    this.paddle.moveLeft();
 	  } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
 	    this.paddle.moveRight();
 	  } else if (CloudBreaker.KEYS[event.keyCode] === "play") {
+	    debugger
 	    this.balls[0].inPlay = true;
 	  } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
 	    this.scoreboard.setToZero();
 	    this.gameClock.setToZero();
 	  } else {
-	    // some other key was pressed; ignore.
+	    // some other key was pressed; ignore for now.
 	  }
 	};
 	
@@ -186,7 +202,7 @@
 	    this.ctx.fillText("You Win!!", 345, 200);
 	    var finalScore = this.generateFinalScore();
 	    var finalScoreString= "Total Points: " + finalScore;
-	    this.ctx.fillText(finalScoreString, 165, 100);
+	    this.ctx.fillText(finalScoreString, 215, 100);
 	    clearInterval(this.intervalTimer);
 	    window.cancelAnimationFrame(this.intervalId);
 	  } else if (this.balls.length === 0) {
@@ -385,7 +401,7 @@
 	
 	
 	  this.movement = {
-	    speed: 5
+	    speed: 4
 	  };
 	
 	  this.size = {
@@ -510,10 +526,10 @@
 	};
 	
 	Brick.prototype.checkCollision = function (ball) {
-	  if (ball.position.x + 25 < this.position.x - 6 ||
+	  if (ball.position.x + 16 < this.position.x - 6 ||
 	      ball.position.x > this.position.x + this.size.width + 6) {
 	    return false;
-	  } else if (ball.position.y + 25 < this.position.y - 8 ||
+	  } else if (ball.position.y + 16 < this.position.y - 8 ||
 	              ball.position.y > this.position.y + this.size.height + 8) {
 	    return false;
 	  }
@@ -521,50 +537,49 @@
 	
 	  // otherwise there is a hit
 	  if (ball.direction.x > 0 && ball.direction.y > 0) {
-	    if ((ball.position.y + 30 <= this.position.y) &&
-	          (ball.position.x + 30 > this.position.x)) {
+	    if ((ball.position.y + 16 <= this.position.y) &&
+	          (ball.position.x + 16 > this.position.x)) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.x + 30 > this.position.x) {
+	    } else if (ball.position.x + 20 > this.position.x) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.y + 30 <= this.position.y) {
+	    } else if (ball.position.y + 20 <= this.position.y) {
 	      ball.direction.x *= -1;
 	    } else {
 	      ball.direction.x *= -1;
 	    }
 	  } else if (ball.direction.x < 0 && ball.direction.y > 0 ) {
 	    // if ((ball.position.y + 30 < this.position.y) &&
-	    if (ball.position.x + 30 < this.position.x + this.size.width) {
+	    if (ball.position.x + 20 < this.position.x + this.size.width) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.x + 30 < this.position.x + this.size.width) {
+	    } else if (ball.position.x + 20 < this.position.x + this.size.width) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.y + 30 < this.position.y) {
+	    } else if (ball.position.y + 20 < this.position.y) {
 	      ball.direction.x *= -1;
 	    } else {
 	      ball.direction.x *= -1;
 	    }
 	  } else if (ball.direction.x > 0 && ball.direction.y < 0) {
-	    if (ball.position.x + 30 > this.position.x) {
+	    if (ball.position.x + 20 > this.position.x) {
 	          // (ball.position.y + 30 < this.position.y + this.size.height)) {
 	      // ball.direction.x *= -1;
 	      ball.direction.y *= -1;
-	    } else if (ball.position.x + 30 > this.position.x) {
+	    } else if (ball.position.x + 20 > this.position.x) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.y + 30 < this.position.y + this.size.height) {
+	    } else if (ball.position.y + 16 < this.position.y + this.size.height) {
 	      ball.direction.x *= -1;
 	    } else {
 	      ball.direction.x *= -1;
 	    }
 	  } else if (ball.direction.x < 0 && ball.direction.y < 0) {
-	    if ((ball.position.x + 30 < this.position.x + this.size.width) &&
+	    if ((ball.position.x + 20 < this.position.x + this.size.width) &&
 	          (ball.position.y < this.position.y + this.size.height)) {
 	      // ball.direction.x *= -1;
 	      ball.direction.y *= -1;
-	    } else if (ball.position.x + 30 < this.position.x + this.size.width) {
+	    } else if (ball.position.x + 20 < this.position.x + this.size.width) {
 	      ball.direction.y *= -1;
 	    } else if (ball.position.y < this.position.y + this.size.height) {
 	      ball.direction.x *= -1;
 	    } else {
-	      ball.direction.y *= -1;
 	      ball.direction.x *= -1;
 	    }
 	  } else {
@@ -724,8 +739,7 @@
 	};
 	
 	Scoreboard.prototype.setToZero = function () {
-	  this.score = 0;
-	  this.scoreLabel[0].innerHTML = this.score;
+	  this.scoreLabel[0].innerHTML = 0;
 	};
 	
 	module.exports = Scoreboard;

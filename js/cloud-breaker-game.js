@@ -21,8 +21,22 @@ var CloudBreaker = function ($el, gameClock, scoreboard) {
   //   this.step.bind(this),
   //   CloudBreaker.STEP_MILLIS
   // );
-
-  $(window).on("keydown", this.handleKeyEvent.bind(this));
+  var that = this;
+  $(window).on("keydown", function (e) {
+    if (CloudBreaker.KEYS[event.keyCode] === "W") {
+      that.paddle.moveLeft();
+    } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
+      that.paddle.moveRight();
+    } else if (CloudBreaker.KEYS[event.keyCode] === "play") {
+      debugger
+      that.balls[0].inPlay = true;
+    } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
+      that.scoreboard.setToZero();
+      that.gameClock.setToZero();
+    } else {
+      // some other key was pressed; ignore for now.
+    }
+  });
 };
 
 CloudBreaker.KEYS = {
@@ -48,18 +62,19 @@ CloudBreaker.prototype.tick = function () {
   }
 };
 
-CloudBreaker.prototype.handleKeyEvent = function (event) {
+CloudBreaker.prototype.handleKeyEvent = function (event, that) {
   if (CloudBreaker.KEYS[event.keyCode] === "W") {
     this.paddle.moveLeft();
   } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
     this.paddle.moveRight();
   } else if (CloudBreaker.KEYS[event.keyCode] === "play") {
+    debugger
     this.balls[0].inPlay = true;
   } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
     this.scoreboard.setToZero();
     this.gameClock.setToZero();
   } else {
-    // some other key was pressed; ignore.
+    // some other key was pressed; ignore for now.
   }
 };
 
@@ -76,7 +91,7 @@ CloudBreaker.prototype.step = function () {
     this.ctx.fillText("You Win!!", 345, 200);
     var finalScore = this.generateFinalScore();
     var finalScoreString= "Total Points: " + finalScore;
-    this.ctx.fillText(finalScoreString, 165, 100);
+    this.ctx.fillText(finalScoreString, 215, 100);
     clearInterval(this.intervalTimer);
     window.cancelAnimationFrame(this.intervalId);
   } else if (this.balls.length === 0) {
