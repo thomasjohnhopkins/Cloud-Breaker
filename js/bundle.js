@@ -148,6 +148,16 @@
 	      // some other key was pressed; ignore for now.
 	    }
 	  });
+	
+	  $(window).on("keyup", function (e) {
+	    if (CloudBreaker.KEYS[event.keyCode] === "W") {
+	      that.paddle.arrest();
+	    } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
+	      that.paddle.arrest();
+	    } else {
+	      // some other key was pressed; ignore for now.
+	    }
+	  });
 	};
 	
 	CloudBreaker.KEYS = {
@@ -223,7 +233,8 @@
 	                          balls[i].position.y, 25, 25);
 	    }
 	
-	    this.paddle.draw(this.ctx);
+	    this.paddle.move(this.ctx);
+	
 	    if (this.balls[0].inPlay) {
 	      this.balls[0].move(this.ctx);
 	    }
@@ -346,13 +357,16 @@
 	  };
 	
 	  this.movement = {
-	    speed: 50
+	    speed: 7
 	  };
 	
 	  this.size = {
 	    height: 10,
 	    width: 80
 	  };
+	
+	  this.movingLeft = false;
+	  this.movingRight= false;
 	};
 	
 	Paddle.prototype.draw = function (ctx) {
@@ -362,15 +376,42 @@
 	};
 	
 	Paddle.prototype.moveLeft = function () {
-	  if (this.position.x > 0) {
-	    this.position.x -= this.movement.speed;
-	  }
+	    this.movingLeft = true;
+	
 	};
 	
 	Paddle.prototype.moveRight = function () {
-	  if (this.position.x < (900 - this.size.width)) {
+	  // if (this.position.x > (900 - this.size.width)) {
+	  //   this.movingRight = false;
+	  // } else {
+	    this.movingRight = true;
+	  // }
+	};
+	
+	Paddle.prototype.move = function (ctx) {
+	  if (this.position.x < 0) {
+	    if (this.movingRight === true) {
+	      this.position.x += this.movement.speed;
+	    } else if (this.movingLeft === true) {
+	      this.arrest();
+	    }
+	  } else if (this.position.x + this.size.width > 900) {
+	    if (this.movingLeft === true) {
+	      this.position.x -= this.movement.speed;
+	    } else if (this.movingLeft === true) {
+	      this.arrest();
+	    }
+	  } else if (this.movingRight === true) {
 	    this.position.x += this.movement.speed;
+	  } else if (this.movingLeft === true) {
+	    this.position.x -= this.movement.speed;
 	  }
+	  this.draw(ctx);
+	};
+	
+	Paddle.prototype.arrest = function () {
+	  this.movingRight = false;
+	  this.movingLeft = false;
 	};
 	
 	

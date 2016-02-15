@@ -37,6 +37,16 @@ var CloudBreaker = function ($el, gameClock, scoreboard) {
       // some other key was pressed; ignore for now.
     }
   });
+
+  $(window).on("keyup", function (e) {
+    if (CloudBreaker.KEYS[event.keyCode] === "W") {
+      that.paddle.arrest();
+    } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
+      that.paddle.arrest();
+    } else {
+      // some other key was pressed; ignore for now.
+    }
+  });
 };
 
 CloudBreaker.KEYS = {
@@ -112,7 +122,8 @@ CloudBreaker.prototype.step = function () {
                           balls[i].position.y, 25, 25);
     }
 
-    this.paddle.draw(this.ctx);
+    this.paddle.move(this.ctx);
+
     if (this.balls[0].inPlay) {
       this.balls[0].move(this.ctx);
     }
