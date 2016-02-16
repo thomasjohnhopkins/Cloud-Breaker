@@ -667,7 +667,7 @@
 	
 	  ctx.beginPath();
 	  ctx.rect(this.position.x, this.position.y,
-	                        this.size.width, this.size.height);
+	                        60, 15);
 	  ctx.stroke();
 	  ctx.fill();
 	};
