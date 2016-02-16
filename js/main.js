@@ -7,17 +7,12 @@ var NewGame = require('./new-game.js');
 
   var $canvasEl = $(".cloud-breaker");
   this.ctx = $canvasEl[0].getContext("2d");
-  this.ctx.font = "24px Montserrat";
-  this.ctx.fillStyle = "rgb(255,255,255)";
-  this.ctx.fillText("Welcome to Cloud Breaker!", 300, 100);
-  this.ctx.fillText("Press 'n' key to start a new game", 275, 150);
+  this.ctx.font = "40px Montserrat";
+  this.ctx.strokeStyle = "rgb(255,255,255)";
 
-  // this somewhat works
-  // var scoreboard = new Scoreboard(scoreLabel);
-  // var gameClock = new GameClock(minutesLabel, secondsLabel);
-  //
-  // new CloudBreaker(canvasEl, gameClock, scoreboard);
+  this.ctx.strokeText("Welcome to Cloud Breaker!", 375, 100);
 
+  this.ctx.strokeText("Press 'n' key to start a new game", 275, 150);
 
   $(window).on("keydown", function (e) {
     if (e.keyCode === 78) {

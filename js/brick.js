@@ -114,6 +114,7 @@ Brick.prototype.draw = function (ctx) {
   ctx.beginPath();
   ctx.rect(this.position.x, this.position.y,
                         60, 15);
+  ctx.strokeStyle = "black";
   ctx.stroke();
   ctx.fill();
 };
