@@ -96,7 +96,7 @@ CloudBreaker.prototype.step = function () {
     this.ctx.clearRect(0, 0, 900, 550);
     this.ctx.font = "48px Montserrat";
     this.ctx.fillStyle = "rgb(255,255,255)";
-    this.ctx.fillText("You Win!!", 345, 200);
+    this.ctx.fillText("You Win!!", 335, 200);
     var finalScore = this.generateFinalScore();
     var finalScoreString= "Total Points: " + finalScore;
     this.ctx.fillText(finalScoreString, 215, 100);
