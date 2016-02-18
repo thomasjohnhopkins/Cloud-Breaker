@@ -54,6 +54,7 @@ canvas {
   background: url('../images/zion.JPG');
   background-size: cover;
   border: 2px solid #fff;
+  border-radius: 5px;
 }
 
 div.game-info {

@@ -1,6 +1,6 @@
 # CloudBreaker
-CloudBreaker ([live](http://www.better-sounds.com)) is a browser game inspired by Brick Breaker. Gone are the bricks and ball, in clouds and the sun.
-Use the sun to break up the clouds and enjoy the clear blue sky. The game's background is a photo taken at the end of the Angel's Landing trail in Zion National Park, a trail highly recommended by the creator of this game.
+CloudBreaker ([live](http://www.better-sounds.com)) is a browser game inspired by Brick Breaker. Gone are bricks and the ball, in are clouds and the sun.
+Use the sun to break up clouds and enjoy a clear blue sky. The game's background is a photo taken at the end of the Angel's Landing trail in Zion National Park, a trail highly recommended by the creator of this game.
 
 ## Features
  - Game logic written in JavaScript, rendered in HTML5 Canvas
