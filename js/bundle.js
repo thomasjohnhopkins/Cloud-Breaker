@@ -45,31 +45,18 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var NewGame = __webpack_require__(1);
-	var CloudBreaker = __webpack_require__(2);
+	var CloudBreakerGame = __webpack_require__(2);
 	var GameClock = __webpack_require__(6);
 	var Scoreboard = __webpack_require__(7);
 	
 	(function () {
-	  if (typeof Game === "undefined") {
-	    window.Game = {};
+	  if (typeof CloudBreaker === "undefined") {
+	    window.CloudBreaker = {};
 	  }
 	
-	  this.$canvasEl = $(".cloud-breaker");
-	  var ctx = this.$canvasEl[0].getContext("2d");
+	  window.CloudBreaker.$canvasEl = $(".cloud-breaker");
+	  var ctx = window.CloudBreaker.$canvasEl[0].getContext("2d");
 	
-	  var reset_canvas = function ($canvasEl) {
-	    var minutesLabel = $("#minutes");
-	    var secondsLabel = $("#seconds");
-	    var scoreLabel = $("#score");
-	
-	    var scoreboard = new Scoreboard(scoreLabel);
-	    var gameClock = new GameClock(minutesLabel, secondsLabel);
-	    return new CloudBreaker($canvasEl, gameClock, scoreboard);
-	  };
-	
-	  // cloudBreaker.start();
-	  //
-	  // this.ctx = $canvasEl[0].getContext("2d");
 	  ctx.font = "40px Montserrat";
 	  ctx.strokeStyle = "rgb(255,255,255)";
 	
@@ -77,21 +64,78 @@
 	
 	  ctx.strokeText("Press 'n' key to start a new game", 275, 150);
 	
+	  var Game = CloudBreaker.Game = function () {
+	
+	      window.CloudBreaker.$canvasEl = $(".cloud-breaker");
+	      window.CloudBreaker.minutesLabel = $("#minutes");
+	      window.CloudBreaker.secondsLabel = $("#seconds");
+	      window.CloudBreaker.scoreLabel = $("#score");
+	
+	      window.CloudBreaker.scoreboard = new Scoreboard(window.CloudBreaker.scoreLabel);
+	      window.CloudBreaker.gameClock = new GameClock(window.CloudBreaker.minutesLabel, window.CloudBreaker.secondsLabel);
+	      window.CloudBreaker.cloudBreakerGame = new CloudBreakerGame(window.CloudBreaker.gameClock, window.CloudBreaker.scoreboard);
+	      window.CloudBreaker.cloudBreakerGame.start();
+	
+	  };
+	  // this.$canvasEl = $(".cloud-breaker");
+	  // var ctx = this.$canvasEl[0].getContext("2d");
+	  // //
+	  // // var reset_canvas = function ($canvasEl) {
+	  // //   var minutesLabel = $("#minutes");
+	  // //   var secondsLabel = $("#seconds");
+	  // //   var scoreLabel = $("#score");
+	  // //
+	  // //   var scoreboard = new Scoreboard(scoreLabel);
+	  // //   var gameClock = new GameClock(minutesLabel, secondsLabel);
+	  // //   return new CloudBreaker($canvasEl, gameClock, scoreboard);
+	  // // };
+	  //
+	  // // cloudBreaker.start();
+	  // //
+	  // // this.ctx = $canvasEl[0].getContext("2d");
+	  // ctx.font = "40px Montserrat";
+	  // ctx.strokeStyle = "rgb(255,255,255)";
+	  //
+	  // ctx.strokeText("Welcome to Cloud Breaker!", 375, 100);
+	  //
+	  // ctx.strokeText("Press 'n' key to start a new game", 275, 150);
+	
 	  $(window).on("keydown", function (e) {
 	    if (e.keyCode === 78) {
-	
-	    var $canvasClone = this.$canvasEl.clone(true);
-	
-	    this.$canvasEl.replaceWith($canvasClone);
-	    var $canvasEl = $(".cloud-breaker");
-	    var ctx = $canvasEl[0].getContext("2d");
-	    ctx.clearRect(0, 0, 900, 550);
-	    debugger
-	    // var $currentCanvasEl = $(".cloud-breaker");
-	    // new NewGame($currentCanvasEl);
-	    new NewGame(reset_canvas($canvasEl));
+	      if (window.CloudBreaker.cloudBreakerGame) {
+	        window.CloudBreaker.cloudBreakerGame.scoreboard.setToZero();
+	        window.CloudBreaker.cloudBreakerGame.gameClock.setToZero();
+	      }
+	      window.CloudBreaker.Game();
+	    } else if (e.keyCode === 32) {
+	      window.CloudBreaker.cloudBreakerGame.balls[0].inPlay = true;
+	    } else if (e.keyCode === 39) {
+	      window.CloudBreaker.cloudBreakerGame.paddle.moveRight();
+	    } else if (e.keyCode === 37) {
+	      window.CloudBreaker.cloudBreakerGame.paddle.moveLeft();
 	    }
-	  }).bind(this);
+	      //
+	      // window.Main.$canvasEl = $(".cloud-breaker");
+	      // window.Main.minutesLabel = $("#minutes");
+	      // window.Main.secondsLabel = $("#seconds");
+	      // window.Main.scoreLabel = $("#score");
+	      //
+	      // var scoreboard = new Scoreboard(window.Main.scoreLabel);
+	      // var gameClock = new GameClock(window.Main.minutesLabel, window.NewGame.secondsLabel);
+	      // var cloudBreaker = new CloudBreaker(window.Main.$canvasEl, gameClock, scoreboard);
+	      // cloudBreaker.start();
+	
+	  });
+	
+	  $(window).on("keyup", function (e) {
+	    if (e.keyCode === 37) {
+	      window.CloudBreaker.cloudBreakerGame.paddle.arrest();
+	    } else if (e.keyCode === 39) {
+	      window.CloudBreaker.cloudBreakerGame.paddle.arrest();
+	    } else {
+	      // some other key was pressed; ignore for now.
+	    }
+	  });
 	
 	
 	})();
@@ -101,28 +145,51 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CloudBreaker = __webpack_require__(2);
+	var CloudBreakerGame = __webpack_require__(2);
 	var GameClock = __webpack_require__(6);
 	var Scoreboard = __webpack_require__(7);
 	
-	var newGame = function (cloudBreaker) {
+	
+	(function () {
+	  if (typeof CloudBreaker === "undefined") {
+	    window.CloudBreaker = {};
+	  }
+	
+	  var Game = CloudBreaker.Game = function () {
+	
+	      this.$canvasEl = $(".cloud-breaker");
+	      this.minutesLabel = $("#minutes");
+	      this.secondsLabel = $("#seconds");
+	      this.scoreLabel = $("#score");
+	
+	      var scoreboard = new Scoreboard(this.scoreLabel);
+	      var gameClock = new GameClock(this.minutesLabel, this.secondsLabel);
+	      var cloudBreaker = CloudBreaker.CloudBreakerGame(gameClock, scoreboard);
+	      cloudBreaker.start();
+	
+	  };
+	
+	  //
+	  // var reset_canvas = function ($canvasEl) {
+	  //   var minutesLabel = $("#minutes");
+	  //   var secondsLabel = $("#seconds");
+	  //   var scoreLabel = $("#score");
+	  //
+	  //   var scoreboard = new Scoreboard(scoreLabel);
+	  //   var gameClock = new GameClock(minutesLabel, secondsLabel);
+	  //   return new CloudBreaker($canvasEl, gameClock, scoreboard);
+	  // };
+	
+	  // cloudBreaker.start();
+	  //
+	  // this.ctx = $canvasEl[0].getContext("2d");
+	
+	  // this.$canvasEl = $(".cloud-breaker");
 	
 	  // var $canvasClone = $canvasEl.clone(true);
 	  // $canvasEl.replaceWith($canvasClone);
 	
-	  
-	
-	  // var minutesLabel = $("#minutes");
-	  // var secondsLabel = $("#seconds");
-	  // var scoreLabel = $("#score");
-	  //
-	  // this.scoreboard = new Scoreboard(scoreLabel);
-	  // this.gameClock = new GameClock(minutesLabel, secondsLabel);
-	  // this.cloudBreaker = new CloudBreaker($canvasEl, this.gameClock, this.scoreboard);
-	  cloudBreaker.start();
-	};
-	
-	module.exports = newGame;
+	})();
 
 
 /***/ },
@@ -133,235 +200,240 @@
 	var Ball = __webpack_require__(4);
 	var Brick = __webpack_require__(5);
 	
-	var CloudBreaker = function ($el, gameClock, scoreboard) {
-	  this.$canvasEl = $el;
-	  this.gameClock = gameClock;
-	  this.scoreboard = scoreboard;
-	
-	  this.ctx = this.$canvasEl[0].getContext("2d");
-	  this.paddle = new Paddle();
-	  this.balls = [new Ball(50, 20), new Ball(100, 20), new Ball (150, 20)];
 	
 	
-	  this.bricks = [];
-	  this.lastHitBrick = null;
+	  var CloudBreakerGame = function (gameClock, scoreboard) {
+	    this.gameClock = gameClock;
+	    this.scoreboard = scoreboard;
 	
-	  this.setupGame();
-	
-	  // this.intervalId = window.setInterval(
-	  //   this.step.bind(this),
-	  //   CloudBreaker.STEP_MILLIS
-	  // );
-	  var that = this;
-	  $(window).on("keydown", function (e) {
-	    if (CloudBreaker.KEYS[event.keyCode] === "W") {
-	      that.paddle.moveLeft();
-	    } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
-	      that.paddle.moveRight();
-	    } else if (CloudBreaker.KEYS[event.keyCode] === "play") {
-	      that.balls[0].inPlay = true;
-	    } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
-	      that.scoreboard.setToZero();
-	      that.gameClock.setToZero();
-	    } else {
-	      // some other key was pressed; ignore for now.
-	    }
-	  });
-	
-	  $(window).on("keyup", function (e) {
-	    if (CloudBreaker.KEYS[event.keyCode] === "W") {
-	      that.paddle.arrest();
-	    } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
-	      that.paddle.arrest();
-	    } else {
-	      // some other key was pressed; ignore for now.
-	    }
-	  });
-	};
-	
-	CloudBreaker.KEYS = {
-	  39: "E",
-	  37: "W",
-	  32: "play",
-	  78: "new"
-	};
-	
-	CloudBreaker.STEP_MILLIS = 50;
-	
-	CloudBreaker.prototype.start = function () {
-	  var that = this;
-	  this.intervalId = window.requestAnimationFrame(
-	    that.step.bind(that)
-	  );
-	};
+	    this.ctx = window.CloudBreaker.$canvasEl[0].getContext("2d");
+	    this.paddle = new Paddle();
+	    this.balls = [new Ball(50, 20), new Ball(100, 20), new Ball (150, 20)];
 	
 	
-	CloudBreaker.prototype.tick = function () {
-	  if (this.balls[0].inPlay) {
-	    this.gameClock.run();
-	  }
-	};
+	    this.bricks = [];
+	    this.lastHitBrick = null;
 	
-	// CloudBreaker.prototype.handleKeyEvent = function (event, that) {
-	//   if (CloudBreaker.KEYS[event.keyCode] === "W") {
-	//     this.paddle.moveLeft();
-	//   } else if (CloudBreaker.KEYS[event.keyCode] === "E") {
-	//     this.paddle.moveRight();
-	//   } else if (CloudBreaker.KEYS[event.keyCode] === "play") {
-	//     this.balls[0].inPlay = true;
-	//   } else if (CloudBreaker.KEYS[event.keyCode] === "new") {
-	//     this.scoreboard.setToZero();
-	//     this.gameClock.setToZero();
-	//   } else {
-	//     // some other key was pressed; ignore for now.
-	//   }
-	// };
+	    this.setupGame();
 	
-	CloudBreaker.prototype.step = function () {
-	  this.ctx.clearRect(0, 0, 900, 550);
-	  if (this.balls[0] && this.balls[0].lifeLost) {
-	    this.balls.splice(0, 1);
-	  }
-	  if (this.bricks.length === 0) {
-	    // won game
-	    this.ctx.clearRect(0, 0, 900, 550);
-	    this.ctx.font = "48px Montserrat";
-	    this.ctx.fillStyle = "rgb(255,255,255)";
-	    this.ctx.fillText("You Win!!", 345, 200);
-	    var finalScore = this.generateFinalScore();
-	    var finalScoreString= "Total Points: " + finalScore;
-	    this.ctx.fillText(finalScoreString, 215, 100);
-	    clearInterval(this.intervalTimer);
-	    window.cancelAnimationFrame(this.intervalId);
-	  } else if (this.balls.length === 0) {
-	    // lost game
-	    clearInterval(this.intervalTimer);
-	    window.cancelAnimationFrame(this.intervalId);
-	    this.ctx.clearRect(0, 0, 900, 550);
-	    this.ctx.font = "48px Montserrat";
-	    this.ctx.fillStyle = "rgb(255,255,255)";
-	    var loseMessage = "You Lose!!";
-	    this.ctx.fillText(loseMessage, 340, 200);
-	
-	  } else {
-	    var balls = this.balls;
+	    // this.intervalId = window.setInterval(
+	    //   this.step.bind(this),
+	    //   CloudBreaker.STEP_MILLIS
+	    // );
 	    var that = this;
-	    for (var i = 0; i < balls.length; i++) {
-	      this.ctx.drawImage(balls[i].image, balls[i].position.x,
-	                          balls[i].position.y, 25, 25);
-	    }
+	    // $(window).on("keydown", function (e) {
+	    //   if (CloudBreakerGame.KEYS[event.keyCode] === "W") {
+	    //     that.paddle.moveLeft();
+	    //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "E") {
+	    //     that.paddle.moveRight();
+	    //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "play") {
+	    //     that
+	    //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "new") {
+	    //     that.scoreboard.setToZero();
+	    //     that.gameClock.setToZero();
+	    //
+	    //   } else {
+	    //     // some other key was pressed; ignore for now.
+	    //   }
+	    // });
+	    //
+	    // $(window).on("keyup", function (e) {
+	    //   if (CloudBreakerGame.KEYS[event.keyCode] === "W") {
+	    //     that.paddle.arrest();
+	    //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "E") {
+	    //     that.paddle.arrest();
+	    //   } else {
+	    //     // some other key was pressed; ignore for now.
+	    //   }
+	    // });
+	  };
 	
-	    this.paddle.move(this.ctx);
+	  CloudBreakerGame.KEYS = {
+	    39: "E",
+	    37: "W",
+	    32: "play",
+	    78: "new"
+	  };
 	
+	  CloudBreakerGame.STEP_MILLIS = 50;
+	
+	  CloudBreakerGame.prototype.start = function () {
+	    var that = this;
+	    this.intervalId = window.requestAnimationFrame(
+	      that.step.bind(that)
+	    );
+	  };
+	
+	
+	  CloudBreakerGame.prototype.tick = function () {
 	    if (this.balls[0].inPlay) {
-	      this.balls[0].move(this.ctx);
+	      this.gameClock.run();
 	    }
+	  };
 	
-	    this.bricks.forEach( function (brick) {
-	      brick.draw(that.ctx);
-	    });
+	  // CloudBreakerGame.prototype.handleKeyEvent = function (event, that) {
+	  //   if (CloudBreakerGame.KEYS[event.keyCode] === "W") {
+	  //     this.paddle.moveLeft();
+	  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "E") {
+	  //     this.paddle.moveRight();
+	  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "play") {
+	  //     this.balls[0].inPlay = true;
+	  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "new") {
+	  //     this.scoreboard.setToZero();
+	  //     this.gameClock.setToZero();
+	  //   } else {
+	  //     // some other key was pressed; ignore for now.
+	  //   }
+	  // };
 	
-	    this.balls[0].checkCollision(this.paddle);
-	
-	    if (this.bricks.length > 0) {
-	      for (var j = 0; j < this.bricks.length; j++) {
-	        var currentBrick = this.bricks[j];
-	        // if (this.lastHitBrick === currentBrick) {
-	        //   continue;
-	        // }
-	        var toRemove;
-	        toRemove = currentBrick.checkCollision(this.balls[0]);
-	        if (toRemove) {
-	          // this.lastHitBrick = currentBrick;
-	          this.scoreboard.addPoints(toRemove);
-	        }
-	        if (toRemove === 30) {
-	          that.removeBrick(currentBrick);
-	        }
+	  CloudBreakerGame.prototype.step = function () {
+	    this.ctx.clearRect(0, 0, 900, 550);
+	    if (this.balls[0] && this.balls[0].lifeLost) {
+	      this.balls.splice(0, 1);
+	    }
+	    if (this.bricks.length === 0) {
+	      // won game
+	      this.ctx.clearRect(0, 0, 900, 550);
+	      this.ctx.font = "48px Montserrat";
+	      this.ctx.fillStyle = "rgb(255,255,255)";
+	      this.ctx.fillText("You Win!!", 335, 200);
+	      var finalScore = this.generateFinalScore();
+	      var finalScoreString= "Total Points: " + finalScore;
+	      this.ctx.fillText(finalScoreString, 215, 100);
+	      clearInterval(this.intervalTimer);
+	      window.cancelAnimationFrame(this.intervalId);
+	      // $(window).off("keydown");
+	      // $(window).off("keyup");
+	    } else if (this.balls.length === 0) {
+	      // lost game
+	      clearInterval(this.intervalTimer);
+	      window.cancelAnimationFrame(this.intervalId);
+	      this.ctx.clearRect(0, 0, 900, 550);
+	      this.ctx.font = "48px Montserrat";
+	      this.ctx.fillStyle = "rgb(255,255,255)";
+	      var loseMessage = "You Lose!!";
+	      this.ctx.fillText(loseMessage, 340, 200);
+	      // $(window).off("keydown");
+	      // $(window).off("keyup");
+	    } else {
+	      var balls = this.balls;
+	      var that = this;
+	      for (var i = 0; i < balls.length; i++) {
+	        this.ctx.drawImage(balls[i].image, balls[i].position.x,
+	                            balls[i].position.y, 25, 25);
 	      }
 	
+	      this.paddle.move(this.ctx);
+	
+	      if (this.balls[0].inPlay) {
+	        this.balls[0].move(this.ctx);
+	      }
+	
+	      this.bricks.forEach( function (brick) {
+	        brick.draw(that.ctx);
+	      });
+	
+	      this.balls[0].checkCollision(this.paddle);
+	
+	      if (this.bricks.length > 0) {
+	        for (var j = 0; j < this.bricks.length; j++) {
+	          var currentBrick = this.bricks[j];
+	          // if (this.lastHitBrick === currentBrick) {
+	          //   continue;
+	          // }
+	          var toRemove;
+	          toRemove = currentBrick.checkCollision(this.balls[0]);
+	          if (toRemove) {
+	            // this.lastHitBrick = currentBrick;
+	            this.scoreboard.addPoints(toRemove);
+	          }
+	          if (toRemove === 30) {
+	            that.removeBrick(currentBrick);
+	          }
+	        }
+	
+	      }
 	    }
-	  }
-	  this.intervalId = window.requestAnimationFrame(
-	    this.step.bind(this)
-	  );
-	};
+	    this.intervalId = window.requestAnimationFrame(
+	      this.step.bind(this)
+	    );
+	  };
 	
-	CloudBreaker.prototype.removeBrick = function (brick) {
-	  this.ctx.clearRect(brick.position.x, brick.position.y,
-	                        brick.size.width, brick.size.height);
-	  for (var i = 0; i < this.bricks.length; i++) {
-	    if (this.bricks[i].position.x === brick.position.x &&
-	          this.bricks[i].position.y === brick.position.y) {
-	      this.bricks.splice(i, 1);
+	  CloudBreakerGame.prototype.removeBrick = function (brick) {
+	    this.ctx.clearRect(brick.position.x, brick.position.y,
+	                          brick.size.width, brick.size.height);
+	    for (var i = 0; i < this.bricks.length; i++) {
+	      if (this.bricks[i].position.x === brick.position.x &&
+	            this.bricks[i].position.y === brick.position.y) {
+	        this.bricks.splice(i, 1);
+	      }
 	    }
-	  }
-	};
+	  };
 	
-	CloudBreaker.prototype.middleBrickCoordinates = function (xPos, yPos) {
-	  var bricks = [[xPos, yPos]];
-	  bricks.push([bricks[0][0], (bricks[0][1] + 68)]);
-	  bricks.push([(bricks[0][0] - 31), (bricks[0][1] + 17)]);
-	  bricks.push([(bricks[0][0] + 31), (bricks[0][1] + 17)]);
-	  bricks.push([(bricks[0][0] - 62), (bricks[0][1] + 34)]);
-	  bricks.push([(bricks[0][0] + 62), (bricks[0][1] + 34)]);
-	  bricks.push([bricks[0][0], (bricks[0][1] + 34)]);
-	  bricks.push([(bricks[0][0] - 31), (bricks[0][1] + 51)]);
-	  bricks.push([(bricks[0][0] + 31), (bricks[0][1] + 51)]);
-	  // 9 bricks in total to form one cloud
+	  CloudBreakerGame.prototype.middleBrickCoordinates = function (xPos, yPos) {
+	    var bricks = [[xPos, yPos]];
+	    bricks.push([bricks[0][0], (bricks[0][1] + 68)]);
+	    bricks.push([(bricks[0][0] - 31), (bricks[0][1] + 17)]);
+	    bricks.push([(bricks[0][0] + 31), (bricks[0][1] + 17)]);
+	    bricks.push([(bricks[0][0] - 62), (bricks[0][1] + 34)]);
+	    bricks.push([(bricks[0][0] + 62), (bricks[0][1] + 34)]);
+	    bricks.push([bricks[0][0], (bricks[0][1] + 34)]);
+	    bricks.push([(bricks[0][0] - 31), (bricks[0][1] + 51)]);
+	    bricks.push([(bricks[0][0] + 31), (bricks[0][1] + 51)]);
+	    // 9 bricks in total to form one cloud
 	
-	  return bricks;
-	};
+	    return bricks;
+	  };
 	
-	CloudBreaker.prototype.endBrickCoordinates = function (xPos, yPos) {
-	  var bricks = [[xPos, yPos]];
-	  bricks.push([(bricks[0][0] + 62), bricks[0][1]]);
-	  bricks.push([bricks[0][0], (bricks[0][1] + 16)]);
-	  bricks.push([(bricks[0][0] + 62), (bricks[0][1] + 16)]);
-	  bricks.push([(bricks[0][0] - 62), (bricks[0][1] + 16)]);
-	  bricks.push([(bricks[0][0] + 124), (bricks[0][1] + 16)]);
-	  bricks.push([bricks[0][0], (bricks[0][1] + 32)]);
-	  bricks.push([(bricks[0][0] + 62), (bricks[0][1] + 32)]);
-	  // 8 bricks in total to form one cloud
-	  return bricks;
-	};
+	  CloudBreakerGame.prototype.endBrickCoordinates = function (xPos, yPos) {
+	    var bricks = [[xPos, yPos]];
+	    bricks.push([(bricks[0][0] + 62), bricks[0][1]]);
+	    bricks.push([bricks[0][0], (bricks[0][1] + 16)]);
+	    bricks.push([(bricks[0][0] + 62), (bricks[0][1] + 16)]);
+	    bricks.push([(bricks[0][0] - 62), (bricks[0][1] + 16)]);
+	    bricks.push([(bricks[0][0] + 124), (bricks[0][1] + 16)]);
+	    bricks.push([bricks[0][0], (bricks[0][1] + 32)]);
+	    bricks.push([(bricks[0][0] + 62), (bricks[0][1] + 32)]);
+	    // 8 bricks in total to form one cloud
+	    return bricks;
+	  };
 	
 	
-	CloudBreaker.prototype.setupGame = function () {
-	  this.ctx.clearRect(0, 0, 900, 550);
-	  firstCloud = this.endBrickCoordinates(150, 80);
-	  secondCloud = this.middleBrickCoordinates(410, 35);
-	  thirdCloud = this.endBrickCoordinates(600, 80);
-	  this.buildBricks(firstCloud);
-	  this.buildBricks(secondCloud);
-	  this.buildBricks(thirdCloud);
-	  var that = this;
-	  this.intervalTimer = window.setInterval(
-	    that.tick.bind(that),
-	    1000
-	  );
-	};
+	  CloudBreakerGame.prototype.setupGame = function () {
+	    this.ctx.clearRect(0, 0, 900, 550);
+	    firstCloud = this.endBrickCoordinates(150, 80);
+	    secondCloud = this.middleBrickCoordinates(410, 35);
+	    thirdCloud = this.endBrickCoordinates(600, 80);
+	    this.buildBricks(firstCloud);
+	    this.buildBricks(secondCloud);
+	    this.buildBricks(thirdCloud);
+	    var that = this;
+	    this.intervalTimer = window.setInterval(
+	      that.tick.bind(that),
+	      1000
+	    );
+	  };
 	
-	CloudBreaker.prototype.buildBricks = function (brickCoords) {
-	  var currentBrick;
-	  for (var i = 0; i < brickCoords.length; i++) {
-	    currentBrick = new Brick(brickCoords[i]);
-	    this.bricks.push(currentBrick);
-	  }
-	};
-	CloudBreaker.prototype.generateFinalScore = function () {
-	  var totalSeconds = Math.floor(this.gameClock.totalSeconds);
-	  var finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
-	  var roundedScore = Math.floor(finalScore);
-	  this.scoreboard.setFinalScore(finalScore);
-	  return finalScore.toString().slice(0, 6);
-	};
+	  CloudBreakerGame.prototype.buildBricks = function (brickCoords) {
+	    var currentBrick;
+	    for (var i = 0; i < brickCoords.length; i++) {
+	      currentBrick = new Brick(brickCoords[i]);
+	      this.bricks.push(currentBrick);
+	    }
+	  };
+	  CloudBreakerGame.prototype.generateFinalScore = function () {
+	    var totalSeconds = Math.floor(this.gameClock.totalSeconds);
+	    var finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
+	    var roundedScore = Math.floor(finalScore);
+	    this.scoreboard.setFinalScore(finalScore);
+	    return finalScore.toString().slice(0, 6);
+	  };
 	
-	CloudBreaker.prototype.play = function () {
+	  CloudBreakerGame.prototype.play = function () {
 	
-	};
+	  };
 	
-	module.exports = CloudBreaker;
+	module.exports = CloudBreakerGame;
 
 
 /***/ },

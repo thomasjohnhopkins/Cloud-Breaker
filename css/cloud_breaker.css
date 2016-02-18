@@ -1,4 +1,4 @@
-html, body, h1, canvas, i, a {
+html, body, h1, canvas, i, a, ul, li {
   margin: 0;
   padding: 0;
   border: 0;
@@ -24,6 +24,26 @@ h1 {
   font-size: 24px;
   margin-left: 125px;
   margin-bottom: 5px;
+}
+
+div.game-instructions {
+  width: 900px;
+  margin-top: 15px;
+  font-size: 16px;
+  margin-left: 125px;
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+div.game-instruction {
+  margin-left: 28px;
+  float: left;
+}
+
+span {
+  padding: 1px 7px;
+  border: 1px solid #fff;
+  margin: 0 2px;
 }
 
 canvas {
@@ -82,14 +102,6 @@ p.game-creator {
 
 p.icon {
   padding: 0 37px;
-}
-
-p.game-instrucitons {
-  margin-top: 30px;
-  text-align: center;
-  margin-right: 5px;
-  margin-left: 5px;
-  font-size: 16px;
 }
 
 p.first {
