@@ -114,16 +114,7 @@
 	    } else if (e.keyCode === 37) {
 	      window.CloudBreaker.cloudBreakerGame.paddle.moveLeft();
 	    }
-	      //
-	      // window.Main.$canvasEl = $(".cloud-breaker");
-	      // window.Main.minutesLabel = $("#minutes");
-	      // window.Main.secondsLabel = $("#seconds");
-	      // window.Main.scoreLabel = $("#score");
-	      //
-	      // var scoreboard = new Scoreboard(window.Main.scoreLabel);
-	      // var gameClock = new GameClock(window.Main.minutesLabel, window.NewGame.secondsLabel);
-	      // var cloudBreaker = new CloudBreaker(window.Main.$canvasEl, gameClock, scoreboard);
-	      // cloudBreaker.start();
+	  
 	
 	  });
 	
@@ -221,39 +212,9 @@
 	    //   CloudBreaker.STEP_MILLIS
 	    // );
 	    var that = this;
-	    // $(window).on("keydown", function (e) {
-	    //   if (CloudBreakerGame.KEYS[event.keyCode] === "W") {
-	    //     that.paddle.moveLeft();
-	    //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "E") {
-	    //     that.paddle.moveRight();
-	    //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "play") {
-	    //     that
-	    //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "new") {
-	    //     that.scoreboard.setToZero();
-	    //     that.gameClock.setToZero();
-	    //
-	    //   } else {
-	    //     // some other key was pressed; ignore for now.
-	    //   }
-	    // });
-	    //
-	    // $(window).on("keyup", function (e) {
-	    //   if (CloudBreakerGame.KEYS[event.keyCode] === "W") {
-	    //     that.paddle.arrest();
-	    //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "E") {
-	    //     that.paddle.arrest();
-	    //   } else {
-	    //     // some other key was pressed; ignore for now.
-	    //   }
-	    // });
+	
 	  };
 	
-	  CloudBreakerGame.KEYS = {
-	    39: "E",
-	    37: "W",
-	    32: "play",
-	    78: "new"
-	  };
 	
 	  CloudBreakerGame.STEP_MILLIS = 50;
 	
@@ -302,8 +263,6 @@
 	      this.ctx.fillText(finalScoreString, 215, 100);
 	      clearInterval(this.intervalTimer);
 	      window.cancelAnimationFrame(this.intervalId);
-	      // $(window).off("keydown");
-	      // $(window).off("keyup");
 	    } else if (this.balls.length === 0) {
 	      // lost game
 	      clearInterval(this.intervalTimer);
@@ -313,8 +272,6 @@
 	      this.ctx.fillStyle = "rgb(255,255,255)";
 	      var loseMessage = "You Lose!!";
 	      this.ctx.fillText(loseMessage, 340, 200);
-	      // $(window).off("keydown");
-	      // $(window).off("keyup");
 	    } else {
 	      var balls = this.balls;
 	      var that = this;
@@ -424,13 +381,8 @@
 	  CloudBreakerGame.prototype.generateFinalScore = function () {
 	    var totalSeconds = Math.floor(this.gameClock.totalSeconds);
 	    var finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
-	    var roundedScore = Math.floor(finalScore);
 	    this.scoreboard.setFinalScore(finalScore);
 	    return finalScore.toString().slice(0, 6);
-	  };
-	
-	  CloudBreakerGame.prototype.play = function () {
-	
 	  };
 	
 	module.exports = CloudBreakerGame;
@@ -866,12 +818,15 @@
 	};
 	
 	Scoreboard.prototype.setFinalScore = function (points) {
-	  this.score = points.toString().slice(0, 6);
-	  this.scoreLabel[0].innerHTML = this.score;
+	  finalScore = points.toString().slice(0, 6);
+	  intScore = parseInt(finalScore);
+	  addedPoints = intScore - this.score;
+	  this.addPoints(addedPoints);
 	};
 	
 	Scoreboard.prototype.setToZero = function () {
-	  this.scoreLabel[0].innerHTML = 0;
+	  this.score = 0;
+	  this.scoreLabel[0].innerHTML = this.score;
 	};
 	
 	module.exports = Scoreboard;

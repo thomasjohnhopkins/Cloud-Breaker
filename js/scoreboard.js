@@ -28,12 +28,15 @@ Scoreboard.prototype.run = function () {
 };
 
 Scoreboard.prototype.setFinalScore = function (points) {
-  this.score = points.toString().slice(0, 6);
-  this.scoreLabel[0].innerHTML = this.score;
+  finalScore = points.toString().slice(0, 6);
+  intScore = parseInt(finalScore);
+  addedPoints = intScore - this.score;
+  this.addPoints(addedPoints);
 };
 
 Scoreboard.prototype.setToZero = function () {
-  this.scoreLabel[0].innerHTML = 0;
+  this.score = 0;
+  this.scoreLabel[0].innerHTML = this.score;
 };
 
 module.exports = Scoreboard;

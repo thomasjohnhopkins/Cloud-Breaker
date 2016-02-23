@@ -68,16 +68,7 @@ var Scoreboard = require('./scoreboard.js');
     } else if (e.keyCode === 37) {
       window.CloudBreaker.cloudBreakerGame.paddle.moveLeft();
     }
-      //
-      // window.Main.$canvasEl = $(".cloud-breaker");
-      // window.Main.minutesLabel = $("#minutes");
-      // window.Main.secondsLabel = $("#seconds");
-      // window.Main.scoreLabel = $("#score");
-      //
-      // var scoreboard = new Scoreboard(window.Main.scoreLabel);
-      // var gameClock = new GameClock(window.Main.minutesLabel, window.NewGame.secondsLabel);
-      // var cloudBreaker = new CloudBreaker(window.Main.$canvasEl, gameClock, scoreboard);
-      // cloudBreaker.start();
+  
 
   });
 
