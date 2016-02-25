@@ -18,12 +18,6 @@ var Brick = require('./brick.js');
 
     this.setupGame();
 
-    // this.intervalId = window.setInterval(
-    //   this.step.bind(this),
-    //   CloudBreaker.STEP_MILLIS
-    // );
-    var that = this;
-
   };
 
 
@@ -43,21 +37,6 @@ var Brick = require('./brick.js');
     }
   };
 
-  // CloudBreakerGame.prototype.handleKeyEvent = function (event, that) {
-  //   if (CloudBreakerGame.KEYS[event.keyCode] === "W") {
-  //     this.paddle.moveLeft();
-  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "E") {
-  //     this.paddle.moveRight();
-  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "play") {
-  //     this.balls[0].inPlay = true;
-  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "new") {
-  //     this.scoreboard.setToZero();
-  //     this.gameClock.setToZero();
-  //   } else {
-  //     // some other key was pressed; ignore for now.
-  //   }
-  // };
-
   CloudBreakerGame.prototype.step = function () {
     this.ctx.clearRect(0, 0, 900, 550);
     if (this.balls[0] && this.balls[0].lifeLost) {
@@ -65,6 +44,8 @@ var Brick = require('./brick.js');
     }
     if (this.bricks.length === 0) {
       // won game
+      clearInterval(this.intervalTimer);
+      window.cancelAnimationFrame(this.intervalId);
       this.ctx.clearRect(0, 0, 900, 550);
       this.ctx.font = "48px Montserrat";
       this.ctx.fillStyle = "rgb(255,255,255)";
@@ -72,8 +53,7 @@ var Brick = require('./brick.js');
       var finalScore = this.generateFinalScore();
       var finalScoreString= "Total Points: " + finalScore;
       this.ctx.fillText(finalScoreString, 215, 100);
-      clearInterval(this.intervalTimer);
-      window.cancelAnimationFrame(this.intervalId);
+
     } else if (this.balls.length === 0) {
       // lost game
       clearInterval(this.intervalTimer);
@@ -189,11 +169,16 @@ var Brick = require('./brick.js');
       this.bricks.push(currentBrick);
     }
   };
+
   CloudBreakerGame.prototype.generateFinalScore = function () {
     var totalSeconds = Math.floor(this.gameClock.totalSeconds);
-    var finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
-    this.scoreboard.setFinalScore(finalScore);
-    return finalScore.toString().slice(0, 6);
+    if (this.finalScore) {
+      return this.finalScore.toString().slice(0, 6);
+    } else {
+      this.finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
+      this.scoreboard.setFinalScore(this.finalScore);
+      return this.finalScore.toString().slice(0, 6);
+    }
   };
 
 module.exports = CloudBreakerGame;

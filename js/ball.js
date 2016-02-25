@@ -36,10 +36,6 @@ Ball.SUN_EMOJI.src = 'images/sun.png';
 
 
 Ball.prototype.draw = function (ctx) {
-  // this.clearBall(ctx);
-  // ctx.fillStyle = "images/sun_emoji";
-  // ctx.fillRect(this.position.x, this.position.y,
-  //               this.size.width, this.size.height);
   ctx.drawImage(this.image, this.position.x, this.position.y, 25, 25);
 };
 
@@ -71,10 +67,10 @@ Ball.prototype.reset = function () {
 };
 
 Ball.prototype.checkCollision = function (object) {
-  if (this.centerOfMass.x > object.position.x + object.size.width + 12.5) {
+  if (this.centerOfMass.x > object.position.x + object.size.width + 8) {
     return false;
   }
-  if (this.centerOfMass.x < object.position.x - 12.5) {
+  if (this.centerOfMass.x < object.position.x - 8) {
     return false;
   }
   if ((this.position.y + this.size.height) < object.position.y) {
@@ -89,34 +85,38 @@ Ball.prototype.checkCollision = function (object) {
         this.centerOfMass.x <= (object.position.x + object.size.width + 12.5)) {
     this.direction.y *= -1;
   }
-  if (this.direction.x > 0) {
+  if (this.direction.x >= 0) {
     if (this.centerOfMass.x < object.position.x + 10) {
       this.direction.x = -2;
-    } else if (this.centerOfMass.x < object.position.x + 20) {
+    } else if (this.centerOfMass.x < object.position.x + 25) {
       this.direction.x = -1.5;
-    } else if (this.centerOfMass.x < object.position.x + 30) {
-      this.direction.x = -1.0;
-    } else if (this.centerOfMass.x < object.position.x + 40) {
-      this.direction.x = -0.5;
-    } else if (this.centerOfMass.x < object.position.x + 50) {
-      this.direction.x = 0.5;
-    } else if (this.centerOfMass.x < object.position.x + 60) {
-      this.direction.x = 1.0;
-    } else if (this.centerOfMass.x < object.position.x + 30) {
-      this.direction.x = -1.5;
+    } else if (this.centerOfMass.x < object.position.x + 35) {
+      this.direction.x = -0.75;
+    } else if (this.centerOfMass.x < object.position.x + 45) {
+      this.direction.x = 0;
+    } else if (this.centerOfMass.x < object.position.x + 55) {
+      this.direction.x = 0.75;
+    } else if (this.centerOfMass.x < object.position.x + 70) {
+      this.direction.x = 1.5;
     } else {
       this.direction.x = 2.0;
     }
 
   } else if (this.direction.x < 0) {
-    if (this.centerOfMass.x < object.position.x + 20) {
+    if (this.centerOfMass.x < object.position.x + 10) {
+      this.direction.x = -2;
+    } else if (this.centerOfMass.x < object.position.x + 25) {
       this.direction.x = -1.5;
-    } else if (this.centerOfMass.x < object.position.x + 40) {
-      this.direction.x = -0.5;
-    } else if (this.centerOfMass.x < object.position.x + 60) {
-      this.direction.x = 0.5;
-    } else {
+    } else if (this.centerOfMass.x < object.position.x + 35) {
+      this.direction.x = -1.0;
+    } else if (this.centerOfMass.x < object.position.x + 45) {
+      this.direction.x = 0;
+    } else if (this.centerOfMass.x < object.position.x + 55) {
+      this.direction.x = 1.0;
+    } else if (this.centerOfMass.x < object.position.x + 70) {
       this.direction.x = 1.5;
+    } else {
+      this.direction.x = 2.0;
     }
   }
 };

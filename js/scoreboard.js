@@ -1,5 +1,4 @@
 var Scoreboard = function ($score) {
-        // this.clock = $el;
 
         this.score = 0;
         this.scoreLabel = $score;
@@ -30,8 +29,10 @@ Scoreboard.prototype.run = function () {
 Scoreboard.prototype.setFinalScore = function (points) {
   finalScore = points.toString().slice(0, 6);
   intScore = parseInt(finalScore);
-  addedPoints = intScore - this.score;
-  this.addPoints(addedPoints);
+  // addedPoints = intScore - this.score;
+  // this.addPoints(addedPoints);
+  debugger
+  this.scoreLabel[0].innerHTML = finalScore;
 };
 
 Scoreboard.prototype.setToZero = function () {

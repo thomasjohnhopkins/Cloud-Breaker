@@ -73,32 +73,12 @@
 	
 	      window.CloudBreaker.scoreboard = new Scoreboard(window.CloudBreaker.scoreLabel);
 	      window.CloudBreaker.gameClock = new GameClock(window.CloudBreaker.minutesLabel, window.CloudBreaker.secondsLabel);
-	      window.CloudBreaker.cloudBreakerGame = new CloudBreakerGame(window.CloudBreaker.gameClock, window.CloudBreaker.scoreboard);
+	      window.CloudBreaker.cloudBreakerGame =
+	        new CloudBreakerGame(window.CloudBreaker.gameClock, window.CloudBreaker.scoreboard);
 	      window.CloudBreaker.cloudBreakerGame.start();
 	
 	  };
-	  // this.$canvasEl = $(".cloud-breaker");
-	  // var ctx = this.$canvasEl[0].getContext("2d");
-	  // //
-	  // // var reset_canvas = function ($canvasEl) {
-	  // //   var minutesLabel = $("#minutes");
-	  // //   var secondsLabel = $("#seconds");
-	  // //   var scoreLabel = $("#score");
-	  // //
-	  // //   var scoreboard = new Scoreboard(scoreLabel);
-	  // //   var gameClock = new GameClock(minutesLabel, secondsLabel);
-	  // //   return new CloudBreaker($canvasEl, gameClock, scoreboard);
-	  // // };
-	  //
-	  // // cloudBreaker.start();
-	  // //
-	  // // this.ctx = $canvasEl[0].getContext("2d");
-	  // ctx.font = "40px Montserrat";
-	  // ctx.strokeStyle = "rgb(255,255,255)";
-	  //
-	  // ctx.strokeText("Welcome to Cloud Breaker!", 375, 100);
-	  //
-	  // ctx.strokeText("Press 'n' key to start a new game", 275, 150);
+	
 	
 	  $(window).on("keydown", function (e) {
 	    if (e.keyCode === 78) {
@@ -114,7 +94,7 @@
 	    } else if (e.keyCode === 37) {
 	      window.CloudBreaker.cloudBreakerGame.paddle.moveLeft();
 	    }
-	  
+	
 	
 	  });
 	
@@ -207,12 +187,6 @@
 	
 	    this.setupGame();
 	
-	    // this.intervalId = window.setInterval(
-	    //   this.step.bind(this),
-	    //   CloudBreaker.STEP_MILLIS
-	    // );
-	    var that = this;
-	
 	  };
 	
 	
@@ -232,21 +206,6 @@
 	    }
 	  };
 	
-	  // CloudBreakerGame.prototype.handleKeyEvent = function (event, that) {
-	  //   if (CloudBreakerGame.KEYS[event.keyCode] === "W") {
-	  //     this.paddle.moveLeft();
-	  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "E") {
-	  //     this.paddle.moveRight();
-	  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "play") {
-	  //     this.balls[0].inPlay = true;
-	  //   } else if (CloudBreakerGame.KEYS[event.keyCode] === "new") {
-	  //     this.scoreboard.setToZero();
-	  //     this.gameClock.setToZero();
-	  //   } else {
-	  //     // some other key was pressed; ignore for now.
-	  //   }
-	  // };
-	
 	  CloudBreakerGame.prototype.step = function () {
 	    this.ctx.clearRect(0, 0, 900, 550);
 	    if (this.balls[0] && this.balls[0].lifeLost) {
@@ -254,6 +213,8 @@
 	    }
 	    if (this.bricks.length === 0) {
 	      // won game
+	      clearInterval(this.intervalTimer);
+	      window.cancelAnimationFrame(this.intervalId);
 	      this.ctx.clearRect(0, 0, 900, 550);
 	      this.ctx.font = "48px Montserrat";
 	      this.ctx.fillStyle = "rgb(255,255,255)";
@@ -261,8 +222,7 @@
 	      var finalScore = this.generateFinalScore();
 	      var finalScoreString= "Total Points: " + finalScore;
 	      this.ctx.fillText(finalScoreString, 215, 100);
-	      clearInterval(this.intervalTimer);
-	      window.cancelAnimationFrame(this.intervalId);
+	
 	    } else if (this.balls.length === 0) {
 	      // lost game
 	      clearInterval(this.intervalTimer);
@@ -378,11 +338,16 @@
 	      this.bricks.push(currentBrick);
 	    }
 	  };
+	
 	  CloudBreakerGame.prototype.generateFinalScore = function () {
 	    var totalSeconds = Math.floor(this.gameClock.totalSeconds);
-	    var finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
-	    this.scoreboard.setFinalScore(finalScore);
-	    return finalScore.toString().slice(0, 6);
+	    if (this.finalScore) {
+	      return this.finalScore.toString().slice(0, 6);
+	    } else {
+	      this.finalScore = 1500 + (30000 / totalSeconds) + (this.balls.length * 100);
+	      this.scoreboard.setFinalScore(this.finalScore);
+	      return this.finalScore.toString().slice(0, 6);
+	    }
 	  };
 	
 	module.exports = CloudBreakerGame;
@@ -502,10 +467,6 @@
 	
 	
 	Ball.prototype.draw = function (ctx) {
-	  // this.clearBall(ctx);
-	  // ctx.fillStyle = "images/sun_emoji";
-	  // ctx.fillRect(this.position.x, this.position.y,
-	  //               this.size.width, this.size.height);
 	  ctx.drawImage(this.image, this.position.x, this.position.y, 25, 25);
 	};
 	
@@ -537,10 +498,10 @@
 	};
 	
 	Ball.prototype.checkCollision = function (object) {
-	  if (this.centerOfMass.x > object.position.x + object.size.width + 12.5) {
+	  if (this.centerOfMass.x > object.position.x + object.size.width + 8) {
 	    return false;
 	  }
-	  if (this.centerOfMass.x < object.position.x - 12.5) {
+	  if (this.centerOfMass.x < object.position.x - 8) {
 	    return false;
 	  }
 	  if ((this.position.y + this.size.height) < object.position.y) {
@@ -555,34 +516,38 @@
 	        this.centerOfMass.x <= (object.position.x + object.size.width + 12.5)) {
 	    this.direction.y *= -1;
 	  }
-	  if (this.direction.x > 0) {
+	  if (this.direction.x >= 0) {
 	    if (this.centerOfMass.x < object.position.x + 10) {
 	      this.direction.x = -2;
-	    } else if (this.centerOfMass.x < object.position.x + 20) {
+	    } else if (this.centerOfMass.x < object.position.x + 25) {
 	      this.direction.x = -1.5;
-	    } else if (this.centerOfMass.x < object.position.x + 30) {
-	      this.direction.x = -1.0;
-	    } else if (this.centerOfMass.x < object.position.x + 40) {
-	      this.direction.x = -0.5;
-	    } else if (this.centerOfMass.x < object.position.x + 50) {
-	      this.direction.x = 0.5;
-	    } else if (this.centerOfMass.x < object.position.x + 60) {
-	      this.direction.x = 1.0;
-	    } else if (this.centerOfMass.x < object.position.x + 30) {
-	      this.direction.x = -1.5;
+	    } else if (this.centerOfMass.x < object.position.x + 35) {
+	      this.direction.x = -0.75;
+	    } else if (this.centerOfMass.x < object.position.x + 45) {
+	      this.direction.x = 0;
+	    } else if (this.centerOfMass.x < object.position.x + 55) {
+	      this.direction.x = 0.75;
+	    } else if (this.centerOfMass.x < object.position.x + 70) {
+	      this.direction.x = 1.5;
 	    } else {
 	      this.direction.x = 2.0;
 	    }
 	
 	  } else if (this.direction.x < 0) {
-	    if (this.centerOfMass.x < object.position.x + 20) {
+	    if (this.centerOfMass.x < object.position.x + 10) {
+	      this.direction.x = -2;
+	    } else if (this.centerOfMass.x < object.position.x + 25) {
 	      this.direction.x = -1.5;
-	    } else if (this.centerOfMass.x < object.position.x + 40) {
-	      this.direction.x = -0.5;
-	    } else if (this.centerOfMass.x < object.position.x + 60) {
-	      this.direction.x = 0.5;
-	    } else {
+	    } else if (this.centerOfMass.x < object.position.x + 35) {
+	      this.direction.x = -1.0;
+	    } else if (this.centerOfMass.x < object.position.x + 45) {
+	      this.direction.x = 0;
+	    } else if (this.centerOfMass.x < object.position.x + 55) {
+	      this.direction.x = 1.0;
+	    } else if (this.centerOfMass.x < object.position.x + 70) {
 	      this.direction.x = 1.5;
+	    } else {
+	      this.direction.x = 2.0;
 	    }
 	  }
 	};
@@ -619,46 +584,44 @@
 	
 	
 	  // otherwise there is a hit
-	  if (ball.direction.x > 0 && ball.direction.y > 0) {
+	  if (ball.direction.x >= 0 && ball.direction.y > 0) {
 	    if ((ball.position.y + 16 <= this.position.y) &&
 	          (ball.position.x + 16 > this.position.x)) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.x + 20 > this.position.x) {
+	    } else if (ball.position.x + 16 > this.position.x) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.y + 20 <= this.position.y) {
+	    } else if (ball.position.y + 16 <= this.position.y) {
 	      ball.direction.x *= -1;
 	    } else {
 	      ball.direction.x *= -1;
 	    }
-	  } else if (ball.direction.x < 0 && ball.direction.y > 0 ) {
+	  } else if (ball.direction.x <= 0 && ball.direction.y > 0 ) {
 	    // if ((ball.position.y + 30 < this.position.y) &&
-	    if (ball.position.x + 20 < this.position.x + this.size.width) {
+	    if (ball.position.x + 16 < this.position.x + this.size.width) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.x + 20 < this.position.x + this.size.width) {
+	    } else if (ball.position.x + 16 < this.position.x + this.size.width) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.y + 20 < this.position.y) {
+	    } else if (ball.position.y + 16 < this.position.y) {
 	      ball.direction.x *= -1;
 	    } else {
 	      ball.direction.x *= -1;
 	    }
-	  } else if (ball.direction.x > 0 && ball.direction.y < 0) {
-	    if (ball.position.x + 20 > this.position.x) {
-	          // (ball.position.y + 30 < this.position.y + this.size.height)) {
-	      // ball.direction.x *= -1;
+	  } else if (ball.direction.x >= 0 && ball.direction.y < 0) {
+	    if (ball.position.x + 16 > this.position.x) {
 	      ball.direction.y *= -1;
-	    } else if (ball.position.x + 20 > this.position.x) {
+	    } else if (ball.position.x + 16 > this.position.x) {
 	      ball.direction.y *= -1;
 	    } else if (ball.position.y + 16 < this.position.y + this.size.height) {
 	      ball.direction.x *= -1;
 	    } else {
 	      ball.direction.x *= -1;
 	    }
-	  } else if (ball.direction.x < 0 && ball.direction.y < 0) {
-	    if ((ball.position.x + 20 < this.position.x + this.size.width) &&
+	  } else if (ball.direction.x <= 0 && ball.direction.y < 0) {
+	    if ((ball.position.x + 16 < this.position.x + this.size.width) &&
 	          (ball.position.y < this.position.y + this.size.height)) {
 	      // ball.direction.x *= -1;
 	      ball.direction.y *= -1;
-	    } else if (ball.position.x + 20 < this.position.x + this.size.width) {
+	    } else if (ball.position.x + 16 < this.position.x + this.size.width) {
 	      ball.direction.y *= -1;
 	    } else if (ball.position.y < this.position.y + this.size.height) {
 	      ball.direction.x *= -1;
@@ -789,7 +752,6 @@
 /***/ function(module, exports) {
 
 	var Scoreboard = function ($score) {
-	        // this.clock = $el;
 	
 	        this.score = 0;
 	        this.scoreLabel = $score;
@@ -820,8 +782,10 @@
 	Scoreboard.prototype.setFinalScore = function (points) {
 	  finalScore = points.toString().slice(0, 6);
 	  intScore = parseInt(finalScore);
-	  addedPoints = intScore - this.score;
-	  this.addPoints(addedPoints);
+	  // addedPoints = intScore - this.score;
+	  // this.addPoints(addedPoints);
+	  debugger
+	  this.scoreLabel[0].innerHTML = finalScore;
 	};
 	
 	Scoreboard.prototype.setToZero = function () {

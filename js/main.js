@@ -27,32 +27,12 @@ var Scoreboard = require('./scoreboard.js');
 
       window.CloudBreaker.scoreboard = new Scoreboard(window.CloudBreaker.scoreLabel);
       window.CloudBreaker.gameClock = new GameClock(window.CloudBreaker.minutesLabel, window.CloudBreaker.secondsLabel);
-      window.CloudBreaker.cloudBreakerGame = new CloudBreakerGame(window.CloudBreaker.gameClock, window.CloudBreaker.scoreboard);
+      window.CloudBreaker.cloudBreakerGame =
+        new CloudBreakerGame(window.CloudBreaker.gameClock, window.CloudBreaker.scoreboard);
       window.CloudBreaker.cloudBreakerGame.start();
 
   };
-  // this.$canvasEl = $(".cloud-breaker");
-  // var ctx = this.$canvasEl[0].getContext("2d");
-  // //
-  // // var reset_canvas = function ($canvasEl) {
-  // //   var minutesLabel = $("#minutes");
-  // //   var secondsLabel = $("#seconds");
-  // //   var scoreLabel = $("#score");
-  // //
-  // //   var scoreboard = new Scoreboard(scoreLabel);
-  // //   var gameClock = new GameClock(minutesLabel, secondsLabel);
-  // //   return new CloudBreaker($canvasEl, gameClock, scoreboard);
-  // // };
-  //
-  // // cloudBreaker.start();
-  // //
-  // // this.ctx = $canvasEl[0].getContext("2d");
-  // ctx.font = "40px Montserrat";
-  // ctx.strokeStyle = "rgb(255,255,255)";
-  //
-  // ctx.strokeText("Welcome to Cloud Breaker!", 375, 100);
-  //
-  // ctx.strokeText("Press 'n' key to start a new game", 275, 150);
+
 
   $(window).on("keydown", function (e) {
     if (e.keyCode === 78) {
@@ -68,7 +48,7 @@ var Scoreboard = require('./scoreboard.js');
     } else if (e.keyCode === 37) {
       window.CloudBreaker.cloudBreakerGame.paddle.moveLeft();
     }
-  
+
 
   });
 

@@ -23,46 +23,44 @@ Brick.prototype.checkCollision = function (ball) {
 
 
   // otherwise there is a hit
-  if (ball.direction.x > 0 && ball.direction.y > 0) {
+  if (ball.direction.x >= 0 && ball.direction.y > 0) {
     if ((ball.position.y + 16 <= this.position.y) &&
           (ball.position.x + 16 > this.position.x)) {
       ball.direction.y *= -1;
-    } else if (ball.position.x + 20 > this.position.x) {
+    } else if (ball.position.x + 16 > this.position.x) {
       ball.direction.y *= -1;
-    } else if (ball.position.y + 20 <= this.position.y) {
+    } else if (ball.position.y + 16 <= this.position.y) {
       ball.direction.x *= -1;
     } else {
       ball.direction.x *= -1;
     }
-  } else if (ball.direction.x < 0 && ball.direction.y > 0 ) {
+  } else if (ball.direction.x <= 0 && ball.direction.y > 0 ) {
     // if ((ball.position.y + 30 < this.position.y) &&
-    if (ball.position.x + 20 < this.position.x + this.size.width) {
+    if (ball.position.x + 16 < this.position.x + this.size.width) {
       ball.direction.y *= -1;
-    } else if (ball.position.x + 20 < this.position.x + this.size.width) {
+    } else if (ball.position.x + 16 < this.position.x + this.size.width) {
       ball.direction.y *= -1;
-    } else if (ball.position.y + 20 < this.position.y) {
+    } else if (ball.position.y + 16 < this.position.y) {
       ball.direction.x *= -1;
     } else {
       ball.direction.x *= -1;
     }
-  } else if (ball.direction.x > 0 && ball.direction.y < 0) {
-    if (ball.position.x + 20 > this.position.x) {
-          // (ball.position.y + 30 < this.position.y + this.size.height)) {
-      // ball.direction.x *= -1;
+  } else if (ball.direction.x >= 0 && ball.direction.y < 0) {
+    if (ball.position.x + 16 > this.position.x) {
       ball.direction.y *= -1;
-    } else if (ball.position.x + 20 > this.position.x) {
+    } else if (ball.position.x + 16 > this.position.x) {
       ball.direction.y *= -1;
     } else if (ball.position.y + 16 < this.position.y + this.size.height) {
       ball.direction.x *= -1;
     } else {
       ball.direction.x *= -1;
     }
-  } else if (ball.direction.x < 0 && ball.direction.y < 0) {
-    if ((ball.position.x + 20 < this.position.x + this.size.width) &&
+  } else if (ball.direction.x <= 0 && ball.direction.y < 0) {
+    if ((ball.position.x + 16 < this.position.x + this.size.width) &&
           (ball.position.y < this.position.y + this.size.height)) {
       // ball.direction.x *= -1;
       ball.direction.y *= -1;
-    } else if (ball.position.x + 20 < this.position.x + this.size.width) {
+    } else if (ball.position.x + 16 < this.position.x + this.size.width) {
       ball.direction.y *= -1;
     } else if (ball.position.y < this.position.y + this.size.height) {
       ball.direction.x *= -1;
