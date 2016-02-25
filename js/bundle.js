@@ -516,40 +516,27 @@
 	        this.centerOfMass.x <= (object.position.x + object.size.width + 12.5)) {
 	    this.direction.y *= -1;
 	  }
-	  if (this.direction.x >= 0) {
-	    if (this.centerOfMass.x < object.position.x + 10) {
-	      this.direction.x = -2;
-	    } else if (this.centerOfMass.x < object.position.x + 25) {
-	      this.direction.x = -1.5;
-	    } else if (this.centerOfMass.x < object.position.x + 35) {
-	      this.direction.x = -0.75;
-	    } else if (this.centerOfMass.x < object.position.x + 45) {
-	      this.direction.x = 0;
-	    } else if (this.centerOfMass.x < object.position.x + 55) {
-	      this.direction.x = 0.75;
-	    } else if (this.centerOfMass.x < object.position.x + 70) {
-	      this.direction.x = 1.5;
-	    } else {
-	      this.direction.x = 2.0;
-	    }
 	
-	  } else if (this.direction.x < 0) {
 	    if (this.centerOfMass.x < object.position.x + 10) {
 	      this.direction.x = -2;
-	    } else if (this.centerOfMass.x < object.position.x + 25) {
+	    } else if (this.centerOfMass.x < object.position.x + 20) {
 	      this.direction.x = -1.5;
-	    } else if (this.centerOfMass.x < object.position.x + 35) {
+	    } else if (this.centerOfMass.x < object.position.x + 30) {
 	      this.direction.x = -1.0;
-	    } else if (this.centerOfMass.x < object.position.x + 45) {
+	    } else if (this.centerOfMass.x < object.position.x + 37) {
+	      this.direction.x = -0.5;
+	    } else if (this.centerOfMass.x < object.position.x + 43) {
 	      this.direction.x = 0;
-	    } else if (this.centerOfMass.x < object.position.x + 55) {
+	    } else if (this.centerOfMass.x < object.position.x + 50) {
+	      this.direction.x = 0.5;
+	    } else if (this.centerOfMass.x < object.position.x + 60) {
 	      this.direction.x = 1.0;
 	    } else if (this.centerOfMass.x < object.position.x + 70) {
 	      this.direction.x = 1.5;
 	    } else {
 	      this.direction.x = 2.0;
 	    }
-	  }
+	
 	};
 	
 	module.exports = Ball;
