@@ -36,14 +36,15 @@ div.game-instructions {
 }
 
 div.game-instruction {
-  margin-left: 28px;
+  width: 295px;
+  text-align: center;
   float: left;
 }
 
 span {
   padding: 1px 7px;
   border: 1px solid #fff;
-  margin: 0 2px;
+  margin: 10px 0 10px 10px;
 }
 
 canvas {

@@ -92,9 +92,9 @@ Ball.prototype.checkCollision = function (object) {
       this.direction.x = -1.5;
     } else if (this.centerOfMass.x < object.position.x + 30) {
       this.direction.x = -1.0;
-    } else if (this.centerOfMass.x < object.position.x + 37) {
+    } else if (this.centerOfMass.x < object.position.x + 38) {
       this.direction.x = -0.5;
-    } else if (this.centerOfMass.x < object.position.x + 43) {
+    } else if (this.centerOfMass.x < object.position.x + 42) {
       this.direction.x = 0;
     } else if (this.centerOfMass.x < object.position.x + 50) {
       this.direction.x = 0.5;
