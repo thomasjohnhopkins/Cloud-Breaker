@@ -56,13 +56,13 @@
 	
 	  window.CloudBreaker.$canvasEl = $(".cloud-breaker");
 	  var ctx = window.CloudBreaker.$canvasEl[0].getContext("2d");
-	
-	  ctx.font = "40px Montserrat";
-	  ctx.strokeStyle = "rgb(255,255,255)";
-	
-	  ctx.strokeText("Welcome to Cloud Breaker!", 375, 100);
-	
-	  ctx.strokeText("Press 'n' key to start a new game", 275, 150);
+	  //
+	  // ctx.font = "40px Montserrat";
+	  // ctx.strokeStyle = "rgb(255,255,255)";
+	  //
+	  // ctx.strokeText("Welcome to Cloud Breaker!", 375, 100);
+	  //
+	  // ctx.strokeText("Press 'n' key to start a new game", 275, 150);
 	
 	  var Game = CloudBreaker.Game = function () {
 	
@@ -71,14 +71,19 @@
 	      window.CloudBreaker.secondsLabel = $("#seconds");
 	      window.CloudBreaker.scoreLabel = $("#score");
 	
-	      window.CloudBreaker.scoreboard = new Scoreboard(window.CloudBreaker.scoreLabel);
-	      window.CloudBreaker.gameClock = new GameClock(window.CloudBreaker.minutesLabel, window.CloudBreaker.secondsLabel);
+	      window.CloudBreaker.scoreboard =
+	                new Scoreboard(window.CloudBreaker.scoreLabel);
+	      window.CloudBreaker.gameClock =
+	                new GameClock(window.CloudBreaker.minutesLabel,
+	                                window.CloudBreaker.secondsLabel);
 	      window.CloudBreaker.cloudBreakerGame =
-	        new CloudBreakerGame(window.CloudBreaker.gameClock, window.CloudBreaker.scoreboard);
+	                new CloudBreakerGame(window.CloudBreaker.gameClock,
+	                                      window.CloudBreaker.scoreboard);
 	      window.CloudBreaker.cloudBreakerGame.start();
 	
 	  };
 	
+	  window.CloudBreaker.Game();
 	
 	  $(window).on("keydown", function (e) {
 	    if (e.keyCode === 78) {
@@ -523,9 +528,9 @@
 	      this.direction.x = -1.5;
 	    } else if (this.centerOfMass.x < object.position.x + 30) {
 	      this.direction.x = -1.0;
-	    } else if (this.centerOfMass.x < object.position.x + 37) {
+	    } else if (this.centerOfMass.x < object.position.x + 38) {
 	      this.direction.x = -0.5;
-	    } else if (this.centerOfMass.x < object.position.x + 43) {
+	    } else if (this.centerOfMass.x < object.position.x + 42) {
 	      this.direction.x = 0;
 	    } else if (this.centerOfMass.x < object.position.x + 50) {
 	      this.direction.x = 0.5;
