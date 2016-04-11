@@ -7,21 +7,21 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script src="./js/jquery-2.1.1.js"></script>
+
+
   </head>
 
   <body class="group">
     <div class="wrapper">
       <h1>Blue Skies Await. Play Cloud Breaker Below.</h1>
+      <div class="place-holder">placeholder</div>
       <div class="game-instructions group">
-         <div class="game-instruction">
-           New Game <span>n</span>
-         </div>
          <div class="game-instruction">
            Play <span>spacebar</span>
          </div>
          <div class="game-instruction">
            Move Paddle <span><i class="fa fa-caret-left"></i></span>
-            <span><i class="fa fa-caret-right"></i></span>
+           <span><i class="fa fa-caret-right"></i></span>
          </div>
        </div>
       <div class="game-info">
@@ -36,6 +36,14 @@
         </div>
         </div>
 
+      </div>
+      <div class="modal">
+        <h2>Game instructions</h2>
+        <p>Play Sun<span>spacebar</span></p>
+        <p>
+          Move Paddle <span><i class="fa fa-caret-left"></i></span>
+          <span><i class="fa fa-caret-right"></i></span>
+        </p>
       </div>
       <canvas width="900" height="550"
         id="canvas" class="cloud-breaker">
@@ -68,5 +76,15 @@
     </div>
 
       <script src="./js/bundle.js"></script>
+      <script type="text/javascript" charset="utf-8">
+        function removeModal () {
+          $(window).on("keydown", function (e) {
+            debugger
+            if (e.keyCode === 32) {
+              debugger
+            }
+          });
+        }
+      </script>
   </body>
 </html>

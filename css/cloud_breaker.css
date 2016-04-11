@@ -13,6 +13,7 @@ body {
 }
 
 .wrapper {
+  position: relative;
   width: 1145px;
   margin: 0 auto;
 }
@@ -27,18 +28,56 @@ h1 {
 }
 
 div.game-instructions {
+  display: none;
   width: 900px;
-  margin-top: 15px;
   font-size: 16px;
   margin-left: 125px;
   margin-bottom: 10px;
+  margin-top: 30px;
   list-style: none;
 }
 
+div.place-holder {
+  display: block;
+  width: 900px;
+  font-size: 16px;
+  margin-left: 125px;
+  margin-bottom: 10px;
+  margin-top: 30px;
+  color: #6696D4;
+}
+
 div.game-instruction {
-  width: 295px;
+  width: 445px;
   text-align: center;
   float: left;
+}
+
+.modal {
+  position: absolute;
+  margin-top: 150px;
+  left: 33%;
+  width: 300px;
+  height: 130px;
+  border: 1px solid #fff;
+  background: #6696D4;
+  color: #fff;
+  padding: 50px;
+  opacity: 0.8;
+  border-radius: 5px;
+}
+
+.modal > h2 {
+  margin: 0px;
+  width: 300px;
+  text-align: center;
+}
+
+.modal > p {
+  font-size: 20px;
+  margin-top: 30px;
+  width: 300px;
+  text-align: center;
 }
 
 span {

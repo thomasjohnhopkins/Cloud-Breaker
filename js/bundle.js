@@ -87,13 +87,23 @@
 	
 	  $(window).on("keydown", function (e) {
 	    if (e.keyCode === 78) {
-	      if (window.CloudBreaker.cloudBreakerGame) {
+	      // if (window.CloudBreaker.cloudBreakerGame) {
+	      //   window.CloudBreaker.cloudBreakerGame.scoreboard.setToZero();
+	      //   window.CloudBreaker.cloudBreakerGame.gameClock.setToZero();
+	      // }
+	      // window.CloudBreaker.Game();
+	    } else if (e.keyCode === 32) {
+	      $(".modal").css( "display", "none" );
+	      $(".place-holder").css( "display", "none" );
+	
+	      $(".game-instructions").css( "display", "block" );
+	      if (window.CloudBreaker.cloudBreakerGame.balls.length > 0) {
+	        window.CloudBreaker.cloudBreakerGame.balls[0].inPlay = true;
+	      } else {
 	        window.CloudBreaker.cloudBreakerGame.scoreboard.setToZero();
 	        window.CloudBreaker.cloudBreakerGame.gameClock.setToZero();
+	        window.CloudBreaker.Game();
 	      }
-	      window.CloudBreaker.Game();
-	    } else if (e.keyCode === 32) {
-	      window.CloudBreaker.cloudBreakerGame.balls[0].inPlay = true;
 	    } else if (e.keyCode === 39) {
 	      window.CloudBreaker.cloudBreakerGame.paddle.moveRight();
 	    } else if (e.keyCode === 37) {
@@ -531,7 +541,9 @@
 	    } else if (this.centerOfMass.x < object.position.x + 38) {
 	      this.direction.x = -0.5;
 	    } else if (this.centerOfMass.x < object.position.x + 42) {
-	      this.direction.x = 0;
+	      this.direction.x = -0.15;
+	    } else if (this.centerOfMass.x < object.position.x + 46) {
+	      this.direction.x = 0.15;
 	    } else if (this.centerOfMass.x < object.position.x + 50) {
 	      this.direction.x = 0.5;
 	    } else if (this.centerOfMass.x < object.position.x + 60) {
